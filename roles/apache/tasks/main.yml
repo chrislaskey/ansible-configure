@@ -1,0 +1,7 @@
+---
+
+- name: Apache | Install
+  yum: name={{ item }} state=present
+  with_items:
+   - httpd
+   - mod_wsgi
