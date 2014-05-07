@@ -36,3 +36,12 @@
     - "{{ nagios.objects.dir }}templates.cfg"
     - "{{ nagios.objects.dir }}timeperiods.cfg"
     - "{{ nagios.objects.dir }}windows.cfg"
+
+- name: Nagios Server | Remove example config files
+  file: path="{{ item }}" state=absent
+  with_items:
+    - "{{ nagios.config.dest }}extinfo_nagios2.cfg"
+    - "{{ nagios.config.dest }}hostgroups_nagios2.cfg"
+    - "{{ nagios.config.dest }}localhost_nagios2.cfg"
+    - "{{ nagios.config.dest }}services_nagios2.cfg"
+    - "{{ nagios.config.dest }}localhost.cfg"
