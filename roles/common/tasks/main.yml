@@ -25,3 +25,11 @@
 - name: Create the GPG key for Remi
   copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg/
 
+- name: Copy the RPMforge repository definition
+  copy: src=rpmforge.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for RPMforge dag
+  copy: src=RPM-GPG-KEY-rpmforge-dag dest=/etc/pki/rpm-gpg/
+
+- name: Create the GPG key for RPMforge fabian
+  copy: src=RPM-GPG-KEY-rpmforge-fabian dest=/etc/pki/rpm-gpg/
