@@ -1,0 +1,8 @@
+---
+
+- name: configure backup servers
+  hosts: backupservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - backup_server
