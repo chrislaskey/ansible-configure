@@ -30,3 +30,8 @@
 
 - name: Nagios Client | Start NRPE service
   service: name=nrpe state=started enabled=true
+
+- name: Iptables | Add NRPE exception
+  lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ nrpe.port }}"
+              insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ nrpe.port }} -j  ACCEPT"
+  notify: restart iptables
