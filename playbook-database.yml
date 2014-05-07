@@ -1,0 +1,8 @@
+---
+
+- name: Install MySQL and configure the database servers
+  hosts: dbservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - mysql
