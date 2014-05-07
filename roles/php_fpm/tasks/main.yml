@@ -1,0 +1,7 @@
+---
+# This task installs and configures php_fpm for apache
+
+- name: PHP-FPM | Install
+  yum: name={{ item }} state=present
+  with_items:
+   - php
