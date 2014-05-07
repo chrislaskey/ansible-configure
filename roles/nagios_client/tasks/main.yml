@@ -21,3 +21,9 @@
 
 - name: Nagios Client | Sync NRPE commands
   synchronize: src="{{ nrpe.commands.src }}" dest="{{ nrpe.commands.dest }}"
+
+- name: Nagios Client | Update NRPE command file permissions
+  file: path="{{ nrpe.commands.dest }}" owner=root group=root mode=0644 recurse=yes
+
+- name: Nagios Client | Update NRPE command directory permissions
+  shell: "find {{ nrpe.commands.dest }} -type d | xargs -I {} chmod 0755 {}"
