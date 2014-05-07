@@ -9,3 +9,13 @@
   register: keypair_exists
   changed_when: keypair_exists.rc != 0
   ignore_errors: True
+
+- name: Backup Server | Create SSH key
+  shell: "sudo -u {{ ansible_ssh_user }} ssh-keygen -f '/home/{{ ansible_ssh_user }}/.ssh/id_rsa' -N ''"
+  when: keypair_exists.rc != 0
+
+- name: Backup Server | Update SSH private key file permission
+  file: path="/home/{{ ansible_ssh_user }}/.ssh/id_rsa" owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0600
+
+- name: Backup Server | Update SSH public key file permission
+  file: path="/home/{{ ansible_ssh_user }}/.ssh/id_rsa.pub" owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0644
