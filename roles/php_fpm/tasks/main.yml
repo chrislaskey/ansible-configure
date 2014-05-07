@@ -9,3 +9,20 @@
    - php-common
    - php-fpm
    - php-pdo
+
+- name: PHP-FPM | Install supporting packages
+  yum: name={{ item }} state=present
+  with_items:
+   - php-curl
+   - php-gd
+   - php-imagick
+   - php-mcrypt
+   - php-memcached
+   - php-mysql
+   - php-pear
+   - php-pgsql
+   - php-sqlite
+   - php-xcache
+  notify:
+   - restart php-fpm
+   - restart httpd
