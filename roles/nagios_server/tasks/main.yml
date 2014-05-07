@@ -62,3 +62,9 @@
   yum: name={{ item }} state=present
   with_items:
    - python-passlib
+
+- name: Nagios Server | Copy htpasswd creation script
+  copy: src=htpasswd.sh dest=/etc/httpd/htpasswd.sh owner=root group=root mode=0700
+
+- name: Nagios Server | Create htpasswd
+  command: "/etc/httpd/htpasswd.sh /etc/nagios/passwd {{ nagios.apache.username }} {{ nagios.apache.password }}"
