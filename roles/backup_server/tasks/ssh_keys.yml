@@ -19,3 +19,8 @@
 
 - name: Backup Server | Update SSH public key file permission
   file: path="/home/{{ ansible_ssh_user }}/.ssh/id_rsa.pub" owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0644
+
+# Update system facts to include public key
+
+- name: Backup Server | Add public key host variable
+  public_key: user="{{ ansible_ssh_user }}"
