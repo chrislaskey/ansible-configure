@@ -9,3 +9,9 @@
 
 [nagiosclients]
 192.168.236.136
+
+[webservers]
+192.168.236.132
+
+[dbservers]
+192.168.236.132
