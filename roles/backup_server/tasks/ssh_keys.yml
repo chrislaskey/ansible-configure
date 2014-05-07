@@ -24,3 +24,11 @@
 
 - name: Backup Server | Add public key host variable
   public_key: user="{{ ansible_ssh_user }}"
+
+# Add hostkey of each backup client known_hosts
+
+- name: Backup Server | Create known_hosts file for ansible user
+  file: path="/home/{{ ansible_ssh_user }}/.ssh/known_hosts" state=touch owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0600
+
+- name: Backup Server | Create known_hosts file for root user
+  file: path="/root/.ssh/known_hosts" state=touch owner="root" group="root" mode=0600
