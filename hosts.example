@@ -1,2 +1,5 @@
 [backupservers]
 192.168.236.136
+
+[backupclients]
+192.168.236.132
