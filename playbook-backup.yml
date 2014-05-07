@@ -6,3 +6,10 @@
   sudo: yes
   roles:
     - backup_server
+
+- name: configure backup clients
+  hosts: backupclients
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - backup_client
