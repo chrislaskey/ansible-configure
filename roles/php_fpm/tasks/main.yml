@@ -5,3 +5,7 @@
   yum: name={{ item }} state=present
   with_items:
    - php
+   - php-cli
+   - php-common
+   - php-fpm
+   - php-pdo
