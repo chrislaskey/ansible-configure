@@ -45,6 +45,12 @@
 - name: Install git package
   yum: name=git state=present
 
+- name: Install fail2ban package
+  yum: name=fail2ban state=present
+
+- name: Install logwatch package
+  yum: name=logwatch state=present
+
 - name: Install ntp package
   yum: name=ntp state=present
 
