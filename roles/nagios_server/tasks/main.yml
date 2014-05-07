@@ -9,3 +9,6 @@
 - name: Nagios Server | Update main config file
   template: src=nagios.cfg dest=/etc/nagios/nagios.cfg owner=root group=root mode=0664
   notify: restart nagios
+
+- name: Nagios Server | Sync plugins
+  synchronize: src="{{ nagios.plugins.src }}" dest="{{ nagios.plugins.dest }}"
