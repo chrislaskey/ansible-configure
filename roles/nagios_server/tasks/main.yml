@@ -71,3 +71,9 @@
 
 - name: Nagios Server | Add nagios user to webserver group
   user: name=nagios groups=nagios,apache append=yes
+
+- name: Nagios Server | Start Apache service
+  service: name=httpd state=started enabled=true
+
+- name: Nagios Server | Start Nagios service
+  service: name=nagios state=started enabled=true
