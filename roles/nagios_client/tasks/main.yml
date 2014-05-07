@@ -1,0 +1,7 @@
+---
+# This task adds the remote Nagios NRPE client
+
+- name: Nagios Client | Install NRPE
+  yum: name={{ item }} state=present
+  with_items:
+   - nrpe
