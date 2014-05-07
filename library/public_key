@@ -1,0 +1,42 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from ansible.module_utils.basic import *
+
+
+DOCUMENTATION = '''
+---
+module: public_key
+short_description: Returns the SSH public key of the ansible ssh user
+description:
+     - Finds the ansible user's ~/.ssh/id_rsa.pub and returns the value.
+version_added: "1.5"
+options: {}
+notes: []
+requirements: []
+author: Chris Laskey
+'''
+
+EXAMPLES = '''
+# Example command-line invocation
+ansible www.example.net -m public_key 
+'''
+
+def main():
+    module = AnsibleModule(
+        argument_spec = dict(
+            user = dict(required=True),
+        )
+    )
+
+    cmd = ["/bin/cat", "/home/ansible/.ssh/id_rsa.pub"]
+    rc, out, err = module.run_command(cmd, check_rc=True)
+    
+    facts = {
+        'public_key': out
+    }
+
+    module.exit_json(changed=False, ansible_facts=facts)
+
+
+main()
