@@ -20,3 +20,8 @@
 
 - name: Apache | Remove default welcome page
   file: path=/etc/httpd/conf.d/welcome.conf state=absent
+
+- name: Iptables | Insert iptables rule for httpd
+  lineinfile: dest=/etc/sysconfig/iptables create=yes state=present regexp="{{ httpd_port }}" insertafter="^:OUTPUT "
+              line="-A INPUT -p tcp  --dport {{ httpd_port }} -j  ACCEPT"
+  notify: restart iptables
