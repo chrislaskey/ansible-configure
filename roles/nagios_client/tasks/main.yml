@@ -27,3 +27,6 @@
 
 - name: Nagios Client | Update NRPE command directory permissions
   shell: "find {{ nrpe.commands.dest }} -type d | xargs -I {} chmod 0755 {}"
+
+- name: Nagios Client | Start NRPE service
+  service: name=nrpe state=started enabled=true
