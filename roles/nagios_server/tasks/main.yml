@@ -45,3 +45,6 @@
     - "{{ nagios.config.dest }}localhost_nagios2.cfg"
     - "{{ nagios.config.dest }}services_nagios2.cfg"
     - "{{ nagios.config.dest }}localhost.cfg"
+
+- name: Nagios Server | Sync config files
+  synchronize: src="{{ nagios.config.src }}" dest="{{ nagios.config.dest }}"
