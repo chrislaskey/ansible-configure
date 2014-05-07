@@ -54,3 +54,6 @@
 
 - name: Nagios Server | Update config directory permissions
   shell: "find {{ nagios.config.dest }} -type d | xargs -I {} chmod 0755 {}"
+
+- name: Nagios Server | Update nagios cgi config file
+  template: src=cgi.cfg dest=/etc/nagios/cgi.cfg owner=root group=root mode=0664
