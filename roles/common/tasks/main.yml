@@ -36,6 +36,9 @@
       
 # Basic Packages
 
+- name: Install bash-completion package
+  yum: name=bash-completion state=present
+
 - name: Install bzip2 package
   yum: name=bzip2 state=present
 
@@ -56,6 +59,9 @@
 
 - name: Install rsync package
   yum: name=rsync state=present
+
+- name: Install tmux package
+  yum: name=tmux state=present
 
 - name: Install wget package
   yum: name=wget state=present
