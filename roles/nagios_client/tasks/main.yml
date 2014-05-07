@@ -18,3 +18,6 @@
 
 - name: Nagios Client | Update plugin directory permissions
   shell: "find {{ nrpe.plugins.dest }} -type d | xargs -I {} chmod 0755 {}"
+
+- name: Nagios Client | Sync NRPE commands
+  synchronize: src="{{ nrpe.commands.src }}" dest="{{ nrpe.commands.dest }}"
