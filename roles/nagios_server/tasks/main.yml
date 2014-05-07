@@ -48,3 +48,9 @@
 
 - name: Nagios Server | Sync config files
   synchronize: src="{{ nagios.config.src }}" dest="{{ nagios.config.dest }}"
+
+- name: Nagios Server | Update config file permissions
+  file: path="{{ nagios.config.dest }}" owner=root group=root mode=0644 recurse=yes
+
+- name: Nagios Server | Update config directory permissions
+  shell: "find {{ nagios.config.dest }} -type d | xargs -I {} chmod 0755 {}"
