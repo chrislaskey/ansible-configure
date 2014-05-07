@@ -1,0 +1,5 @@
+---
+# This task configures SSH between backup server and each client
+
+- name: Backup Server | Make sure .ssh directory exists
+  file: path="/home/{{ ansible_ssh_user }}/.ssh-test" state=directory owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0700
