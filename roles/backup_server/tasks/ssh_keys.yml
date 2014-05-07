@@ -3,3 +3,9 @@
 
 - name: Backup Server | Make sure .ssh directory exists
   file: path="/home/{{ ansible_ssh_user }}/.ssh-test" state=directory owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0700
+
+- name: Backup Server | Check if SSH key pair exists
+  shell: "test -f /home/{{ ansible_ssh_user }}/.ssh/id_rsa"
+  register: keypair_exists
+  changed_when: keypair_exists.rc != 0
+  ignore_errors: True
