@@ -6,3 +6,8 @@
   with_items:
    - mysql-server
    - MySQL-python
+
+- name: MySQL | Create configuration file
+  template: src=my.cnf dest=/etc/my.cnf
+  notify: 
+  - restart mysql
