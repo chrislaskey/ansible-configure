@@ -1,0 +1,12 @@
+---
+
+# SELinux
+
+- name: Install python bindings for selinux
+  yum: name=libselinux-python state=present
+
+- name: Install python bindings for semanage
+  yum: name=libsemanage-python state=present
+
+- name: Install python tools managing selinux
+  yum: name=policycoreutils-python state=present
