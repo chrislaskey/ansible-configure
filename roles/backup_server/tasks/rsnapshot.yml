@@ -9,3 +9,13 @@
 
 - name: Backup Server | rsnapshot | Create backup scripts directory
   file: path=/backups/.scripts owner=root group=root mode=0700
+
+- name: Backup Server | rsnapshot | Add cron jobs
+  cron: name="{{ item.name }}"
+        job="{{ item.job }}"
+        minute="{{ item.minute }}"
+        hour="{{ item.hour }}"
+        day="{{ item.day }}"
+        month="{{ item.month }}"
+        weekday="{{ item.weekday }}"
+  with_items: rsnapshot.cron
