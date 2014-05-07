@@ -1,0 +1,5 @@
+---
+- name: apply a common base configuration to all nodes
+  hosts: all
+  roles:
+    - common
