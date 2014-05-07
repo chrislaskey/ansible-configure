@@ -17,3 +17,6 @@
               regexp='#?NameVirtualHost'
               line='NameVirtualHost *:80'
   notify: restart httpd
+
+- name: Apache | Remove default welcome page
+  file: path=/etc/httpd/conf.d/welcome.conf state=absent
