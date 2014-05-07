@@ -32,3 +32,16 @@
 
 - name: Backup Server | Create known_hosts file for root user
   file: path="/root/.ssh/known_hosts" state=touch owner="root" group="root" mode=0600
+
+- name: Backup Server | Add host keys of backup clients to known hosts
+  shell: "ssh-keyscan {{ hostvars[item]['inventory_hostname'] }}"
+  register: backupserver_hostkeys
+  with_items: groups.backupclients
+
+- name: Backup Server | Add backup client hostkeys to known_hosts file for ansible user
+  lineinfile: dest="/home/{{ ansible_ssh_user }}/.ssh/known_hosts" regexp="^{{ item.item }}" line="{{ item.stdout }}"
+  with_items: backupserver_hostkeys.results
+
+- name: Backup Server | Add backup client hostkeys to known_hosts file for root user
+  lineinfile: dest="/root/.ssh/known_hosts" regexp="^{{ item.item }}" line="{{ item.stdout }}"
+  with_items: backupserver_hostkeys.results
