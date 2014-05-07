@@ -3,3 +3,9 @@
 
 [backupclients]
 192.168.236.132
+
+[nagiosservers]
+192.168.236.132
+
+[nagiosclients]
+192.168.236.136
