@@ -1,0 +1,62 @@
+---
+# rsnapshot:
+# - always use trailing slashes on directories
+# - always use tabs between values
+rsnapshot:
+  dir: /backups/
+  rsync_short_args: "rsync_short_args	-a"
+  rsync_long_args:  "rsync_long_args	--delete --numeric-ids --delete-excluded --rsync-path='sudo rsync'"
+  ssh_args: "ssh_args	-p 22 -i /home/ansible/.ssh/id_rsa"
+  intervals:
+    # interval <label> <number-to-keep>
+    - "interval	hourly	6"
+    - "interval	daily	7"
+    - "interval	weekly	4"
+    - "interval	monthly	6"
+    - "interval	yearly	3"
+  cron:
+    - name:    "rsnapshot hourly"
+      job:     "/usr/bin/rsnapshot hourly"
+      minute:  "0"
+      hour:    "*/4"
+      day:     "*"
+      month:   "*"
+      weekday: "*"
+    - name:    "rsnapshot daily"
+      job:     "/usr/bin/rsnapshot daily"
+      minute:  "15"
+      hour:    "0"
+      day:     "*"
+      month:   "*"
+      weekday: "*"
+    - name:    "rsnapshot weekly"
+      job:     "/usr/bin/rsnapshot weekly"
+      minute:  "30"
+      hour:    "5"
+      day:     "*"
+      month:   "*"
+      weekday: "0"
+    - name:    "rsnapshot monthly"
+      job:     "/usr/bin/rsnapshot monthly"
+      minute:  "45"
+      hour:    "5"
+      day:     "1"
+      month:   "*"
+      weekday: "*"
+    - name:    "rsnapshot yearly"
+      job:     "/usr/bin/rsnapshot yearly"
+      minute:  "55"
+      hour:    "5"
+      day:     "1"
+      month:   "1"
+      weekday: "*"
+  backups:
+    - "backup	/home/	localhost/"
+    - "backup	/etc/	localhost/"
+    # Websites
+    - "backup	ansible@192.168.236.132:/var/www/example-site/	websites/example-site/"
+    # Databases
+    - 'backup_script	/backups/.scripts/mysqldump.sh ansible@192.168.236.132 db1	unused'
+    - "backup	ansible@192.168.236.132:/tmp/mysqldump/db1/	mysql/db1/"
+    - 'backup_script	/backups/.scripts/mysqldump.sh ansible@192.168.236.132 db2	unused'
+    - "backup	ansible@192.168.236.132:/tmp/mysqldump/db2/	mysql/db2/"
