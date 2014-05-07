@@ -1,0 +1,8 @@
+---
+
+- name: configure nagios servers
+  hosts: nagiosservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - nagios_server
