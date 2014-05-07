@@ -1,0 +1,43 @@
+# WARNING: this is a kludge:
+## The User/Group for httpd need to be set before we can load mod_fastcgi,
+## but /etc/httpd/conf.d/fastcgi.conf on RHEL gets loaded before
+## /etc/httpd/conf/httpd.conf, so we need to set them here :(
+## mod_fcgid does not have this bug,
+## but it does not handle child PHP processes appropriately per
+## http://serverfault.com/questions/303535/a-single-php-fastcgi-process-blocks-all-other-php-requests/305093#305093
+
+User apache
+Group apache
+
+LoadModule fastcgi_module modules/mod_fastcgi.so
+
+# dir for IPC socket files
+FastCgiIpcDir /var/run/mod_fastcgi
+
+# wrap all fastcgi script calls in suexec
+FastCgiWrapper On
+
+# global FastCgiConfig can be overridden by FastCgiServer options in vhost config
+FastCgiConfig -idle-timeout 20 -maxClassProcesses 1
+
+# sample PHP config
+# see /usr/share/doc/mod_fastcgi-2.4.6 for php-wrapper script
+# don't forget to disable mod_php in /etc/httpd/conf.d/php.conf!
+#
+# to enable privilege separation, add a "SuexecUserGroup" directive
+# and chown the php-wrapper script and parent directory accordingly
+# see also http://www.brandonturner.net/blog/2009/07/fastcgi_with_php_opcode_cache/
+
+#FastCgiServer /var/www/cgi-bin/php-wrapper
+#AddHandler php-fastcgi .php
+#Action php-fastcgi /cgi-bin/php-wrapper
+#AddType application/x-httpd-php .php
+#DirectoryIndex index.php index.html index.htm
+#
+#<Location /cgi-bin/php-wrapper>
+#    Order Deny,Allow
+#    Deny from All
+#    Allow from env=REDIRECT_STATUS
+#    Options ExecCGI
+#    SetHandler fastcgi-script
+#</Location>
