@@ -31,3 +31,6 @@
 
 - name: SELinux | Allow httpd to remote network connect to database
   seboolean: name=httpd_can_network_connect_db state=true persistent=yes 
+
+- name: Apache | Make sure httpd service is running
+  service: name=httpd state=started enabled=yes
