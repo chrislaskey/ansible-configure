@@ -33,3 +33,23 @@
 
 - name: Create the GPG key for RPMforge fabian
   copy: src=RPM-GPG-KEY-rpmforge-fabian dest=/etc/pki/rpm-gpg/
+      
+# Basic Packages
+
+- name: Install bzip2 package
+  yum: name=bzip2 state=present
+
+- name: Install curl package
+  yum: name=curl state=present
+
+- name: Install git package
+  yum: name=git state=present
+
+- name: Install ntp package
+  yum: name=ntp state=present
+
+- name: Install rsync package
+  yum: name=rsync state=present
+
+- name: Install wget package
+  yum: name=wget state=present
