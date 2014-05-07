@@ -58,3 +58,6 @@
 #               regexp='^display_errors'
 #               line='display_errors = On'
 #   notify: restart php-fpm
+
+- name: PHP-FPM | Make sure PHP-FPM service is running
+  service: name=php-fpm state=started enabled=yes
