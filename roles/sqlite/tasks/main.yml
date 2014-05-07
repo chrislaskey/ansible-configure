@@ -1,0 +1,4 @@
+---
+
+- name: SQLite | Install
+  yum: name=sqlite state=present
