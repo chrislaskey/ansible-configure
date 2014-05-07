@@ -12,3 +12,9 @@
 
 - name: Nagios Server | Sync plugins
   synchronize: src="{{ nagios.plugins.src }}" dest="{{ nagios.plugins.dest }}"
+
+- name: Nagios Server | Update plugin file permissions
+  file: path="{{ nagios.plugins.dest }}" owner=nagios group=nagios mode=0750 recurse=yes
+
+- name: Nagios Server | Update plugin directory permissions
+  shell: "find {{ nagios.plugins.dest }} -type d | xargs -I {} chmod 0755 {}"
