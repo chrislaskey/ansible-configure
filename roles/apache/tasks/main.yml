@@ -5,3 +5,9 @@
   with_items:
    - httpd
    - mod_wsgi
+
+- name: Apache | Remove indexes option
+  lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
+              regexp='Options Indexes FollowSymLinks'
+              line='Options FollowSymLinks'
+  notify: restart httpd
