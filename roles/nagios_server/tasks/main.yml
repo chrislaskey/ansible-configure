@@ -57,3 +57,8 @@
 
 - name: Nagios Server | Update nagios cgi config file
   template: src=cgi.cfg dest=/etc/nagios/cgi.cfg owner=root group=root mode=0664
+
+- name: Nagios Server | Install python library passlib
+  yum: name={{ item }} state=present
+  with_items:
+   - python-passlib
