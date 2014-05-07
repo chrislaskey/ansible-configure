@@ -1,0 +1,8 @@
+---
+
+- name: configure and deploy the web servers and application code
+  hosts: webservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - apache
