@@ -1,3 +1,4 @@
 ---
 
 - include: ssh_keys.yml
+- include: rsnapshot.yml
