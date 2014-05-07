@@ -53,3 +53,8 @@
 
 - name: Install wget package
   yum: name=wget state=present
+
+# Basic Services
+
+- name: Start the ntp service
+  service: name=ntpd state=started enabled=true
