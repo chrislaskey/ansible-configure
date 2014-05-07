@@ -1,0 +1,7 @@
+---
+# This task installs and manages the Nagios server
+
+- name: Nagios Server | Install Nagios
+  yum: name={{ item }} state=present
+  with_items:
+   - nagios
