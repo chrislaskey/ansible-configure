@@ -1,6 +1,8 @@
 ---
 # This playbook will install mysql and create db user and give permissions.
 
+# MySQL Service
+
 - name: MySQL | Install
   yum: name={{ item }} state=installed
   with_items:
@@ -11,3 +13,11 @@
   template: src=my.cnf dest=/etc/my.cnf
   notify: 
   - restart mysql
+
+- name: SELinux | Configure SELinux to start mysql on any port
+  seboolean: name=mysql_connect_any state=true persistent=yes
+
+- name: Iptables | insert mysql iptables rule
+  lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ mysql_port }}"
+              insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ mysql_port }} -j  ACCEPT"
+  notify: restart iptables
