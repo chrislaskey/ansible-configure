@@ -2,3 +2,4 @@
 
 - include: playbook-common.yml
 - include: playbook-backup.yml
+- include: playbook-monitor.yml
