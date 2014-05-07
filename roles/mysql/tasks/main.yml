@@ -24,3 +24,15 @@
 
 - name: MySQL | Start service
   service: name=mysqld state=started enabled=true
+
+# MySQL users
+
+- name: MySQL | Update root user remote password
+  mysql_user: name=root password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT host='%' state=present
+
+# NOTE: Ansible installs the MySQL package in headless mode making the default root password blank.
+#       Setting a root password with the `mysql_user` module on localhost is buggy even when passing
+#       updated login_user and login_password params. Tried with Ansible 1.5.4.
+
+# - name: MySQL | Update root user local password
+#   mysql_user: name=root password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT host='localhost' state=present
