@@ -1,0 +1,7 @@
+---
+# This playbook will install mysql and create db user and give permissions.
+
+- name: MySQL | Install
+  yum: name={{ item }} state=installed
+  with_items:
+   - mysql-server
