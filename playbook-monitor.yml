@@ -5,4 +5,5 @@
   remote_user: ansible
   sudo: yes
   roles:
+    - web
     - nagios_server
