@@ -1,0 +1,6 @@
+---
+# Install and configure rsnapshot
+
+- name: Backup Server | rsnapshot | Install package
+  yum: name=rsnapshot state=present
+
