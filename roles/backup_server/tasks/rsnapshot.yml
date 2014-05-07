@@ -10,6 +10,9 @@
 - name: Backup Server | rsnapshot | Create backup scripts directory
   file: path=/backups/.scripts owner=root group=root mode=0700
 
+- name: Backup Server | rsnapshot | Add mysqldump backup script
+  template: src=mysqldump.sh dest=/backups/.scripts/mysqldump.sh owner=root group=root mode=0700
+
 - name: Backup Server | rsnapshot | Add cron jobs
   cron: name="{{ item.name }}"
         job="{{ item.job }}"
