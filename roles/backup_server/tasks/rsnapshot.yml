@@ -6,3 +6,6 @@
 
 - name: Backup Server | rsnapshot | Update config file
   template: src=rsnapshot.conf dest=/etc/rsnapshot.conf owner=root group=root mode=0644
+
+- name: Backup Server | rsnapshot | Create backup scripts directory
+  file: path=/backups/.scripts owner=root group=root mode=0700
