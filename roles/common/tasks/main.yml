@@ -10,3 +10,11 @@
 
 - name: Install python tools managing selinux
   yum: name=policycoreutils-python state=present
+      
+# Yum
+
+- name: Copy the EPEL repository definition
+  copy: src=epel.repo dest=/etc/yum.repos.d/
+
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg/
