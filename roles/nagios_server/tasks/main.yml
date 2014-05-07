@@ -18,3 +18,21 @@
 
 - name: Nagios Server | Update plugin directory permissions
   shell: "find {{ nagios.plugins.dest }} -type d | xargs -I {} chmod 0755 {}"
+
+- name: Nagios Server | Remove base config files
+  file: path="{{ item }}" state=absent
+  with_items:
+    - /etc/nagios/commands.cfg
+    - "{{ nagios.config.dest }}contacts_nagios2.cfg"
+    - "{{ nagios.config.dest }}generic-host_nagios2.cfg"
+    - "{{ nagios.config.dest }}generic-service_nagios2.cfg"
+    - "{{ nagios.config.dest }}timeperiods_nagios2.cfg"
+    - "{{ nagios.config.dest }}check_mk/check_mk_templates.cfg"
+    - "{{ nagios.objects.dir }}commands.cfg"
+    - "{{ nagios.objects.dir }}contacts.cfg"
+    - "{{ nagios.objects.dir }}localhost.cfg"
+    - "{{ nagios.objects.dir }}printer.cfg"
+    - "{{ nagios.objects.dir }}switch.cfg"
+    - "{{ nagios.objects.dir }}templates.cfg"
+    - "{{ nagios.objects.dir }}timeperiods.cfg"
+    - "{{ nagios.objects.dir }}windows.cfg"
