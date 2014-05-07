@@ -61,3 +61,8 @@
 
 - name: PHP-FPM | Make sure PHP-FPM service is running
   service: name=php-fpm state=started enabled=yes
+
+- name: PHP-FPM | Apache | Install
+  yum: name={{ item }} state=present
+  with_items:
+   - mod_fastcgi
