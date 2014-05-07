@@ -68,3 +68,6 @@
 
 - name: Nagios Server | Create htpasswd
   command: "/etc/httpd/htpasswd.sh /etc/nagios/passwd {{ nagios.apache.username }} {{ nagios.apache.password }}"
+
+- name: Nagios Server | Add nagios user to webserver group
+  user: name=nagios groups=nagios,apache append=yes
