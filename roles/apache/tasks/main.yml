@@ -11,3 +11,9 @@
               regexp='Options Indexes FollowSymLinks'
               line='Options FollowSymLinks'
   notify: restart httpd
+
+- name: Apache | Turn on NameVirtualHost option
+  lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
+              regexp='#?NameVirtualHost'
+              line='NameVirtualHost *:80'
+  notify: restart httpd
