@@ -26,3 +26,35 @@
   notify:
    - restart php-fpm
    - restart httpd
+
+- name: PHP-FPM | Update config settings
+  lineinfile: dest=/etc/php.ini
+              backrefs=yes 
+              regexp='{{ item.regexp }}'
+              line='{{ item.line }}'
+  with_items:
+   - { regexp: '^;?cgi.fix_pathinfo', line: 'cgi.fix_pathinfo = 1' }
+   - { regexp: '^max_execution_time', line: 'max_execution_time = 120' }
+   - { regexp: '^max_input_time', line: 'max_input_time = 60' }
+   - { regexp: '^memory_limit', line: 'memory_limit = 256M' }
+   - { regexp: '^post_max_size', line: 'post_max_size = 256M' }
+   - { regexp: '^upload_max_filesize', line: 'upload_max_filesize = 256M' }
+   - { regexp: '^max_file_uploads', line: 'max_file_uploads = 10' }
+   - { regexp: '^default_socket_timeout', line: 'default_socket_timeout = 120' }
+   - { regexp: '^sendmail_path', line: 'sendmail_path = /usr/sbin/sendmail -t -i' }
+   - { regexp: '^mysql\.connect_timeout', line: 'mysql.connect_timeout = 120' }
+  notify: restart php-fpm
+
+# NOTE: Development system values
+
+# - name: PHP | Config | Turn on error reporting
+#   lineinfile: dest=/etc/php.ini backrefs=yes
+#               regexp='^error_reporting'
+#               line='error_reporting = E_ALL'
+#   notify: restart php-fpm
+
+# - name: PHP | Config | Turn on display errors
+#   lineinfile: dest=/etc/php.ini backrefs=yes
+#               regexp='^display_errors'
+#               line='display_errors = On'
+#   notify: restart php-fpm
