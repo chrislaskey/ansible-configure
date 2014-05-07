@@ -7,3 +7,10 @@
   roles:
     - web
     - nagios_server
+
+- name: configure nagios clients
+  hosts: nagiosclients
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - nagios_client
