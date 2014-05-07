@@ -5,3 +5,7 @@
   yum: name={{ item }} state=present
   with_items:
    - nagios
+
+- name: Nagios Server | Update main config file
+  template: src=nagios.cfg dest=/etc/nagios/nagios.cfg owner=root group=root mode=0664
+  notify: restart nagios
