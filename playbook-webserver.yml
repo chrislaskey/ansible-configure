@@ -6,3 +6,5 @@
   sudo: yes
   roles:
     - apache
+    - php_fpm
+    - sqlite
