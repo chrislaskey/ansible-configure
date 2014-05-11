@@ -5,7 +5,8 @@
   remote_user: ansible
   sudo: yes
   roles:
-    - web
+    - apache
+    - php_fpm
     - nagios_server
 
 - name: configure nagios clients
