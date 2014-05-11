@@ -8,7 +8,7 @@
   template: src=rsnapshot.conf dest=/etc/rsnapshot.conf owner=root group=root mode=0644
 
 - name: Backup Server | rsnapshot | Create backup scripts directory
-  file: path=/backups/.scripts owner=root group=root mode=0700
+  file: path=/backups/.scripts owner=root group=root mode=0700 state=directory
 
 - name: Backup Server | rsnapshot | Add mysqldump backup script
   template: src=mysqldump.sh dest=/backups/.scripts/mysqldump.sh owner=root group=root mode=0700
