@@ -4,4 +4,4 @@
 - include: playbook-backup.yml
 - include: playbook-monitor.yml
 - include: playbook-webserver.yml
-- include: playbook-dbserver.yml
+- include: playbook-database.yml
