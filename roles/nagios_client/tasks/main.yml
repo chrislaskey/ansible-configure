@@ -8,7 +8,7 @@
 
 - name: Nagios Client | Update NRPE config file
   template: src=nrpe.cfg dest=/etc/nagios/nrpe.cfg owner=root group=root mode=0644
-  notify: nrpe restart
+  notify: restart nrpe
 
 - name: Nagios Client | Sync plugins
   synchronize: src="{{ nrpe.plugins.src }}" dest="{{ nrpe.plugins.dest }}"
