@@ -1,15 +1,16 @@
 About
 ================================================================================
 
-An ansible playbook for configuring servers.
+An ansible playbook for configuring different kinds of servers. Including roles
+for:
 
-Includes roles for:
+- Basic server
+- Apache web server
+- MySQL db server
+- Rsnapshot backup server
+- Nagios monitoring server
 
-- Basic server 
-- Web server
-- Database server
-- Backup server
-- Monitoring server
+Tested on CentOS 6.5. Works with SELinux enabled.
 
 
 License
