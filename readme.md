@@ -13,6 +13,13 @@ for:
 Tested on CentOS 6.5. Works with SELinux enabled.
 
 
+### Note ###
+
+Before using this playbook make sure to update appropriate values in the
+`group_vars` directory. In particular be sure to change the MySQL root
+and backup user passwords.
+
+
 License
 ================================================================================
 
