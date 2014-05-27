@@ -19,3 +19,7 @@
   # Note: the always_run attribute ensures the shell command is executed
   # even when using ansible --check flag. See:
   # http://docs.ansible.com/playbooks_checkmode.html
+
+- name: Iptables | Create NAT masquerade rule
+  shell: iptables -A POSTROUTING -t nat -o eth0 -j MASQUERADE -m comment --comment "Unique ID GATEWAYNAT gateway rule allows outside connections"
+  when: iptablesrules.stdout.find("GATEWAYNAT1") == -1
