@@ -24,6 +24,20 @@
   shell: iptables -A POSTROUTING -t nat -o eth0 -j MASQUERADE -m comment --comment "Unique ID GATEWAYNAT gateway rule allows outside connections"
   when: iptablesrules.stdout.find("GATEWAYNAT1") == -1
 
+- name: Iptables | Create accept rule for eth2
+  shell: iptables -I INPUT -t filter -i eth2 -j ACCEPT -m comment --comment "Unique ID GATEWAYACCEPTETH2 gateway rule accept incoming on private network eth2"
+  when: iptablesrules.stdout.find("GATEWAYACCEPTETH2") == -1 
+
+  # The -I flag prepends the new rules instead of appending them to the current
+  # chain. This makes sure the new rules preceed any REJECT rules. But it can
+  # cause problems in complex iptable setups. In that case, it is better to seed
+  # the complete iptables file instead of adding each individual rule as done
+  # here.
+
+- name: Iptables | Create forward rule for eth2
+  shell: iptables -I FORWARD -t filter -i eth2 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH2 gateway rule accept private network connections"
+  when: iptablesrules.stdout.find("GATEWAYFORWARDETH2") == -1
+
 - name: Iptables | Create accept rule for eth1
   shell: iptables -I INPUT -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYACCEPTETH1 gateway rule accept incoming on private network eth1"
   when: iptablesrules.stdout.find("GATEWAYACCEPTETH1") == -1 
