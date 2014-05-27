@@ -23,3 +23,11 @@
 - name: Iptables | Create NAT masquerade rule
   shell: iptables -A POSTROUTING -t nat -o eth0 -j MASQUERADE -m comment --comment "Unique ID GATEWAYNAT gateway rule allows outside connections"
   when: iptablesrules.stdout.find("GATEWAYNAT1") == -1
+
+- name: Iptables | Create accept rule for eth1
+  shell: iptables -I INPUT -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYACCEPTETH1 gateway rule accept incoming on private network eth1"
+  when: iptablesrules.stdout.find("GATEWAYACCEPTETH1") == -1 
+
+- name: Iptables | Create forward rule for eth1
+  shell: iptables -I FORWARD -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH1 gateway rule accept private network connections"
+  when: iptablesrules.stdout.find("GATEWAYFORWARDETH1") == -1 
