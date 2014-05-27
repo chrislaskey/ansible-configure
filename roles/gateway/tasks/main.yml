@@ -45,3 +45,11 @@
 - name: Iptables | Create forward rule for eth1
   shell: iptables -I FORWARD -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH1 gateway rule accept private network connections"
   when: iptablesrules.stdout.find("GATEWAYFORWARDETH1") == -1 
+
+- name: Iptables | Explicitly save current rules
+  shell: service iptables save
+  notify: restart iptables
+
+  # Note: Ansible 1.5 does not support the "save" state, preventing this being
+  # done through a handler. Easy fix is to manually call it. Adds an extra
+  # restart each Ansible run, but so be it.
