@@ -1,0 +1,8 @@
+---
+
+- name: configure and deploy NAT forwarding gateway
+  hosts: gatewayservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - gateway
