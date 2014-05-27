@@ -7,3 +7,15 @@
   # BU Linux 6.5 has some invalid default values in sysctl. These throw an
   # error, causing this command to appear to fail. For now using ugly hack of
   # ignore_errors.
+
+# The following iptable rule management is based off Philip Norton's blog post. See:
+# http://www.hashbangcode.com/blog/adding-iptables-rules-ansible
+
+- name: Iptables | Get current rules
+  shell: iptables-save
+  register: iptablesrules
+  always_run: yes
+
+  # Note: the always_run attribute ensures the shell command is executed
+  # even when using ansible --check flag. See:
+  # http://docs.ansible.com/playbooks_checkmode.html
