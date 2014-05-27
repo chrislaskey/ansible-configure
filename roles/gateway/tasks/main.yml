@@ -1,0 +1,9 @@
+---
+
+- name: Sysctl | Allow IP forwarding
+  sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes state=present reload=yes
+  ignore_errors: True
+
+  # BU Linux 6.5 has some invalid default values in sysctl. These throw an
+  # error, causing this command to appear to fail. For now using ugly hack of
+  # ignore_errors.
