@@ -12,6 +12,12 @@
               line='Options FollowSymLinks'
   notify: restart httpd
 
+- name: Apache | Do not display Apache version
+  lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
+              regexp='ServerTokens'
+              line='ServerTokens Prod'
+  notify: restart httpd
+
 - name: Apache | Turn on NameVirtualHost option
   lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
               regexp='#?NameVirtualHost'
