@@ -24,6 +24,20 @@
               line='NameVirtualHost *:80'
   notify: restart httpd
 
+- name: Apache | Remove unused module files
+  file: path="/etc/httpd/modules/{{ item }}" state=absent
+  with_items:
+    - mod_userdir.so
+  notify: restart httpd
+
+- name: Apache | Remove unused modules from config
+  lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
+              state=absent
+              regexp='LoadModule .* modules/{{ item }}'
+  with_items:
+    - mod_userdir.so
+  notify: restart httpd
+
 - name: Apache | Remove default welcome page
   file: path=/etc/httpd/conf.d/welcome.conf state=absent
 
