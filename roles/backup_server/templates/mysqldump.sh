@@ -10,7 +10,7 @@ ssh_command="${ssh_binary} ${ssh_id} ${host}"
 dump_dir="/tmp/mysqldump/${db}"
 dump_user="{{ mysql_dump_username }}"
 dump_pass="{{ mysql_dump_password }}"
-dump_target="${db}.sql"
+dump_target="${dump_dir}/${db}.sql"
 
 mkdir_cmd="mkdir -p ${dump_dir}"
 mysqldump_cmd="mysqldump -u ${dump_user} -p${dump_pass} ${db} > ${dump_target}"
