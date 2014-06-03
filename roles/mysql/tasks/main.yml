@@ -25,6 +25,11 @@
 - name: MySQL | Start service
   service: name=mysqld state=started enabled=true
 
+# MySQL databases
+
+- name: MySQL | Remove the test database
+  mysql_db: name=test state=absent
+
 # MySQL users
 
 - name: MySQL | Update root user remote password
@@ -39,3 +44,9 @@
 
 - name: MySQL | Create mysqldump user with local access
   mysql_user: name="{{ mysql_dump_username }}" password="{{ mysql_dump_password }}" priv='*.*:USAGE,SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER' host='localhost' state=present
+
+- name: MySQL | Remove any anonymous MySQL users
+  mysql_user: name="" host={{ item }} state=absent
+  with_items:
+   - localhost
+   - "{{ ansible_hostname }}"
