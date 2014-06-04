@@ -66,3 +66,9 @@
   ignore_errors: true
   register: slave
   when: mysql_repl_role == "slave"
+
+- name: MySQL | Replication | Get the current master servers replication status
+  mysql_replication: mode=getmaster
+  delegate_to: "{{ mysql_repl_master }}"
+  register: repl_stat
+  when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
