@@ -9,6 +9,9 @@
    - mysql-server
    - MySQL-python
 
+- name: MySQL | Start service
+  service: name=mysqld state=started enabled=true
+
 - name: MySQL | Create configuration file
   template: src=my.cnf dest=/etc/my.cnf
   notify: 
@@ -17,13 +20,10 @@
 - name: SELinux | Configure SELinux to start mysql on any port
   seboolean: name=mysql_connect_any state=true persistent=yes
 
-- name: Iptables | insert mysql iptables rule
+- name: Iptables | Insert MySQL iptables rule
   lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ mysql_port }}"
               insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ mysql_port }} -j  ACCEPT"
   notify: restart iptables
-
-- name: MySQL | Start service
-  service: name=mysqld state=started enabled=true
 
 # MySQL databases
 
