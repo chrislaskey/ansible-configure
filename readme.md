@@ -16,9 +16,16 @@ Tested on CentOS 6.5. Works with SELinux enabled.
 ### Note ###
 
 Before using this playbook make sure to update appropriate values in the
-`group_vars` directory. In particular be sure to change the MySQL root
-and backup user passwords.
+`group_vars` directory. In particular be sure to set or change:
 
+	# file: group_vars/all
+	mysql_dump_username: <value>
+	mysql_dump_password: <value>
+
+	# file: group_vars/dbservers
+	mysql_root_password: <value>
+	mysql_repl_username: <value>
+	mysql_repl_password: <value>
 
 License
 ================================================================================
