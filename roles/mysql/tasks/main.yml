@@ -55,3 +55,14 @@
 - name: MySQL | Replication | Create replication user with remote access
   mysql_user: name="{{ mysql_repl_username }}" password="{{ mysql_repl_password }}" priv="*.*:REPLICATION SLAVE" host="%" state=present
   when: mysql_repl_role == "master"
+
+# MySQL slave replication
+#
+# Code based on github repository by Benno Joy
+# See: https://github.com/bennojoy/mysql
+
+- name: MySQL | Replication | Check if slave is already configured for replication
+  mysql_replication: mode=getslave
+  ignore_errors: true
+  register: slave
+  when: mysql_repl_role == "slave"
