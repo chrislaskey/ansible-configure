@@ -6,7 +6,7 @@ for:
 
 - Basic server
 - Apache web server
-- MySQL db server
+- MySQL Master/Slave replicated database server
 - Rsnapshot backup server
 - Nagios monitoring server
 
