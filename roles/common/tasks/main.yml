@@ -51,6 +51,10 @@
 - name: Install fail2ban package
   yum: name=fail2ban state=present
 
+- name: Install fail2ban config
+  copy: src=fail2ban-jail.conf dest=/etc/fail2ban/jail.local owner=root group=root mode=0644
+  notify: restart fail2ban
+
 - name: Install logwatch package
   yum: name=logwatch state=present
 
