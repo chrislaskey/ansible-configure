@@ -14,4 +14,5 @@
 192.168.236.132
 
 [dbservers]
-192.168.236.132
+192.168.236.140 mysql_server_id=1 mysql_repl_role=master
+192.168.236.141 mysql_server_id=2 mysql_repl_role=slave  mysql_repl_master=192.168.236.140
