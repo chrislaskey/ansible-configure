@@ -52,3 +52,6 @@
   mysql_user: name="{{ mysql_dump_username }}" password="{{ mysql_dump_password }}" priv="*.*:USAGE,SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER" host="localhost" state=present
   when: mysql_repl_role != "master"
 
+- name: MySQL | Replication | Create replication user with remote access
+  mysql_user: name="{{ mysql_repl_username }}" password="{{ mysql_repl_password }}" priv="*.*:REPLICATION SLAVE" host="%" state=present
+  when: mysql_repl_role == "master"
