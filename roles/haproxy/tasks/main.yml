@@ -1,0 +1,4 @@
+---
+
+- name: HAProxy | Install
+  yum: name=haproxy state=present
