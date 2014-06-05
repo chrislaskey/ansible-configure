@@ -1,0 +1,7 @@
+---
+
+- name: restart iptables
+  service: name=iptables state=restarted
+
+- name: restart haproxy
+  service: name=haproxy state=restarted
