@@ -2,7 +2,8 @@
 
 - include: playbook-common.yml
 - include: playbook-gateway.yml
+- include: playbook-proxy.yml
 - include: playbook-backup.yml
-- include: playbook-monitor.yml
 - include: playbook-webserver.yml
 - include: playbook-database.yml
+- include: playbook-monitor.yml
