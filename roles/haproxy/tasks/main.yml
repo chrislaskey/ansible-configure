@@ -20,3 +20,6 @@
   shell: service iptables save
   notify: restart iptables
 
+- name: HAProxy | Update config file
+  copy: src="{{ haproxy_config }}" dest=/etc/haproxy/haproxy.cfg owner=root group=root mode=0644
+  notify: restart haproxy
