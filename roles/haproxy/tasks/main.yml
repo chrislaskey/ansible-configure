@@ -2,3 +2,21 @@
 
 - name: HAProxy | Install
   yum: name=haproxy state=present
+
+- name: Iptables | Get current rules
+  shell: iptables-save
+  register: iptablesrules
+  always_run: yes
+
+- name: Iptables | Insert iptables rule for HTTP on port 80
+  shell: iptables -I INPUT -p tcp --dport 80 -j ACCEPT -m comment --comment "Unique ID HAPROXYHTTP HAProxy rule accept incoming HTTP traffic"
+  when: iptablesrules.stdout.find("HAPROXYHTTP") == -1 
+
+- name: Iptables | Insert iptables rule for HTTP on port 514
+  shell: iptables -I INPUT -p udp --dport 514 -j ACCEPT -m comment --comment "Unique ID HAPROXYUDP HAProxy rule accept UDP logging messages"
+  when: iptablesrules.stdout.find("HAPROXYUDP") == -1 
+
+- name: Iptables | Explicitly save current rules
+  shell: service iptables save
+  notify: restart iptables
+
