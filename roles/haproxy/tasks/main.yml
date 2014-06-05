@@ -32,3 +32,11 @@
   # For more information see:
   # - http://sharadchhetri.com/2013/10/16/how-to-enable-logging-of-haproxy-in-rsyslog/
   # - http://transloadit.com/blog/2010/08/haproxy-logging/
+
+- name: HAProxy | Add HAProxy logrotate config
+  copy: src=logrotate-haproxy dest=/etc/logrotate.d/haproxy owner=root group=root mode=0644
+  notify: restart haproxy
+
+- name: HAProxy | Add HAProxy status logrotate config
+  copy: src=logrotate-haproxy-status dest=/etc/logrotate.d/haproxystatus owner=root group=root mode=0644
+  notify: restart haproxy
