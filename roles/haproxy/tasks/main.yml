@@ -23,3 +23,12 @@
 - name: HAProxy | Update config file
   copy: src="{{ haproxy_config }}" dest=/etc/haproxy/haproxy.cfg owner=root group=root mode=0644
   notify: restart haproxy
+
+- name: HAProxy | Add rsyslog config
+  copy: src=rsyslog-haproxy.conf dest=/etc/rsyslog.d/haproxy.conf owner=root group=root mode=0644
+  notify: restart haproxy
+
+  # Logging requires configuring the rsyslog daemon first
+  # For more information see:
+  # - http://sharadchhetri.com/2013/10/16/how-to-enable-logging-of-haproxy-in-rsyslog/
+  # - http://transloadit.com/blog/2010/08/haproxy-logging/
