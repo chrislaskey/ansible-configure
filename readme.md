@@ -9,6 +9,8 @@ for:
 - MySQL Master/Slave replicated database server
 - Rsnapshot backup server
 - Nagios monitoring server
+- HAProxy proxy server
+- NAT public/private gateway server
 
 Tested on CentOS 6.5. Works with SELinux enabled.
 
