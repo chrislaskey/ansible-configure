@@ -1,0 +1,8 @@
+---
+
+- name: Install HAProxy
+  hosts: proxyservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - haproxy
