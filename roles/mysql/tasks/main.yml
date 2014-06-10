@@ -14,8 +14,11 @@
 
 - name: MySQL | Create configuration file
   template: src=my.cnf dest=/etc/my.cnf
-  notify: 
-  - restart mysql
+  register: mysql_config
+
+- name: MySQL | Restart MySQL immediately if config has changed
+  command: service mysqld restart
+  when: mysql_config|changed
 
 - name: SELinux | Configure SELinux to start mysql on any port
   seboolean: name=mysql_connect_any state=true persistent=yes
