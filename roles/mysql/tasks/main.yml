@@ -76,6 +76,10 @@
   register: repl_stat
   when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
 
-- name: MySQL | Replication | Change the master in slave to start the replication
+- name: MySQL | Replication | Change the master info on the slave
   mysql_replication: mode=changemaster master_host={{ mysql_repl_master }} master_log_file={{ repl_stat.File }} master_log_pos={{ repl_stat.Position }} master_user="{{ mysql_repl_username }}" master_password="{{ mysql_repl_password }}"
+  when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
+
+- name: MySQL | Replication | Restart MySQL slave to start replication
+  command: service mysqld restart
   when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
