@@ -24,28 +24,28 @@
   file: path="{{ item }}" state=absent
   with_items:
     - /etc/nagios/commands.cfg
-    - "{{ nagios.config.dest }}contacts_nagios2.cfg"
-    - "{{ nagios.config.dest }}generic-host_nagios2.cfg"
-    - "{{ nagios.config.dest }}generic-service_nagios2.cfg"
-    - "{{ nagios.config.dest }}timeperiods_nagios2.cfg"
-    - "{{ nagios.config.dest }}check_mk/check_mk_templates.cfg"
-    - "{{ nagios.objects.dir }}commands.cfg"
-    - "{{ nagios.objects.dir }}contacts.cfg"
-    - "{{ nagios.objects.dir }}localhost.cfg"
-    - "{{ nagios.objects.dir }}printer.cfg"
-    - "{{ nagios.objects.dir }}switch.cfg"
-    - "{{ nagios.objects.dir }}templates.cfg"
-    - "{{ nagios.objects.dir }}timeperiods.cfg"
-    - "{{ nagios.objects.dir }}windows.cfg"
+    - "{{ nagios_config_dest }}contacts_nagios2.cfg"
+    - "{{ nagios_config_dest }}generic-host_nagios2.cfg"
+    - "{{ nagios_config_dest }}generic-service_nagios2.cfg"
+    - "{{ nagios_config_dest }}timeperiods_nagios2.cfg"
+    - "{{ nagios_config_dest }}check_mk/check_mk_templates.cfg"
+    - "{{ nagios_objects_dir }}commands.cfg"
+    - "{{ nagios_objects_dir }}contacts.cfg"
+    - "{{ nagios_objects_dir }}localhost.cfg"
+    - "{{ nagios_objects_dir }}printer.cfg"
+    - "{{ nagios_objects_dir }}switch.cfg"
+    - "{{ nagios_objects_dir }}templates.cfg"
+    - "{{ nagios_objects_dir }}timeperiods.cfg"
+    - "{{ nagios_objects_dir }}windows.cfg"
 
 - name: Nagios Server | Remove example config files
   file: path="{{ item }}" state=absent
   with_items:
-    - "{{ nagios.config.dest }}extinfo_nagios2.cfg"
-    - "{{ nagios.config.dest }}hostgroups_nagios2.cfg"
-    - "{{ nagios.config.dest }}localhost_nagios2.cfg"
-    - "{{ nagios.config.dest }}services_nagios2.cfg"
-    - "{{ nagios.config.dest }}localhost.cfg"
+    - "{{ nagios_config_dest }}extinfo_nagios2.cfg"
+    - "{{ nagios_config_dest }}hostgroups_nagios2.cfg"
+    - "{{ nagios_config_dest }}localhost_nagios2.cfg"
+    - "{{ nagios_config_dest }}services_nagios2.cfg"
+    - "{{ nagios_config_dest }}localhost.cfg"
 
 - name: Nagios Server | Sync config files
   synchronize: src="{{ nagios.config.src }}" dest="{{ nagios.config.dest }}"
