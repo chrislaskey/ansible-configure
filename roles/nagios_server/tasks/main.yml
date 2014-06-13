@@ -67,9 +67,11 @@
 
 - name: Nagios Server | Copy htpasswd creation script
   copy: src=htpasswd.sh dest=/etc/httpd/htpasswd.sh owner=root group=root mode=0700
+  when: nagios_apache_username|default("None") != "None"
 
 - name: Nagios Server | Create htpasswd
-  command: "/etc/httpd/htpasswd.sh /etc/nagios/passwd {{ nagios.apache.username }} {{ nagios.apache.password }}"
+  command: "/etc/httpd/htpasswd.sh /etc/nagios/passwd {{ nagios_apache_username }} {{ nagios_apache_password }}"
+  when: nagios_apache_username|default("None") != "None"
 
 - name: Nagios Server | Add nagios user to webserver group
   user: name=nagios groups=nagios,apache append=yes
