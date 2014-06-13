@@ -1,0 +1,10 @@
+---
+
+nagios_external_commands: 1
+nagios_config_src: 
+nagios_config_dest: /etc/nagios/conf.d/
+nagios_plugins_src: 
+nagios_plugins_dest: /usr/lib64/nagios/plugins/
+nagios_objects_dir: /etc/nagios/objects/ 
+nagios_apache_username: nagiosadmin
+nagios_apache_password: nagiosadmin
