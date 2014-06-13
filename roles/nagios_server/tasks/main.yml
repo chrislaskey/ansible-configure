@@ -48,13 +48,14 @@
     - "{{ nagios_config_dest }}localhost.cfg"
 
 - name: Nagios Server | Sync config files
-  synchronize: src="{{ nagios.config.src }}" dest="{{ nagios.config.dest }}"
+  synchronize: src="{{ nagios_config_src }}" dest="{{ nagios_config_dest }}"
+  when: nagios_config_src|default("None") != "None"
 
 - name: Nagios Server | Update config file permissions
-  file: path="{{ nagios.config.dest }}" owner=root group=root mode=0644 recurse=yes
+  file: path="{{ nagios_config_dest }}" owner=root group=root mode=0644 recurse=yes
 
 - name: Nagios Server | Update config directory permissions
-  shell: "find {{ nagios.config.dest }} -type d | xargs -I {} chmod 0755 {}"
+  shell: "find {{ nagios_config_dest }} -type d | xargs -I {} chmod 0755 {}"
 
 - name: Nagios Server | Update nagios cgi config file
   template: src=cgi.cfg dest=/etc/nagios/cgi.cfg owner=root group=root mode=0664
