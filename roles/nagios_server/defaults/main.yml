@@ -1,6 +1,8 @@
 ---
 
 nagios_external_commands: 1
+nagios_selinux_name: 
+nagios_selinux_src: 
 nagios_config_src: 
 nagios_config_dest: /etc/nagios/conf.d/
 nagios_plugins_src: 
