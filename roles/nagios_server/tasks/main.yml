@@ -7,6 +7,10 @@
   register: module_is_loaded
   ignore_errors: true
 
+- name: SELinux | Copy module config to target
+  synchronize: src="{{ nagios_selinux_src }}" dest=/tmp
+  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+
 - name: Nagios Server | Install Nagios
   yum: name={{ item }} state=present
   with_items:
