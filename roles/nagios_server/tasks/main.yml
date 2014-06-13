@@ -15,6 +15,15 @@
   shell: "checkmodule -M -m -o /tmp/{{ nagios_selinux_name }}.mod /tmp/{{ nagios_selinux_name }}.te"
   when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
 
+- name: SELinux | Compile config file
+  shell: "semodule_package -o /tmp/{{ nagios_selinux_name }}.pp -m /tmp/{{ nagios_selinux_name }}.mod"
+  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+
+  # Taken from the audit2allow man page, this runs the commands:
+  #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
+  #     semodule_package -o /tmp/rule.pp -m /tmp/rule.mod
+  #     semodule -i rule.pp
+
 - name: Nagios Server | Install Nagios
   yum: name={{ item }} state=present
   with_items:
