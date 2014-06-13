@@ -1,6 +1,12 @@
 ---
 # This task installs and manages the Nagios server
 
+- name: SELinux | Get a list of active modules
+  shell: "semodule -l | grep {{ nagios_selinux_name }}"
+  when: nagios_selinux_name|default("None") != "None"
+  register: module_is_loaded
+  ignore_errors: true
+
 - name: Nagios Server | Install Nagios
   yum: name={{ item }} state=present
   with_items:
