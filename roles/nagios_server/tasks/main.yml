@@ -11,6 +11,10 @@
   synchronize: src="{{ nagios_selinux_src }}" dest=/tmp
   when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
 
+- name: SELinux | Check module config file
+  shell: "checkmodule -M -m -o /tmp/{{ nagios_selinux_name }}.mod /tmp/{{ nagios_selinux_name }}.te"
+  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+
 - name: Nagios Server | Install Nagios
   yum: name={{ item }} state=present
   with_items:
