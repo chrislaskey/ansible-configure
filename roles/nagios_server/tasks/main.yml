@@ -40,6 +40,7 @@
 - name: Nagios Server | Sync plugins
   synchronize: src="{{ nagios_plugins_src }}" dest="{{ nagios_plugins_dest }}"
   when: nagios_plugins_src|default("None") != "None"
+  notify: restart nagios
 
 - name: Nagios Server | Update plugin file permissions
   file: path="{{ nagios_plugins_dest }}" owner=nagios group=nagios mode=0750 recurse=yes
@@ -77,6 +78,7 @@
 - name: Nagios Server | Sync config files
   synchronize: src="{{ nagios_config_src }}" dest="{{ nagios_config_dest }}"
   when: nagios_config_src|default("None") != "None"
+  notify: restart nagios
 
 - name: Nagios Server | Update config file permissions
   file: path="{{ nagios_config_dest }}" owner=root group=root mode=0644 recurse=yes
