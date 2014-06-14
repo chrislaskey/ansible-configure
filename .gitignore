@@ -1,2 +1,3 @@
 data/*
 group_vars/nagiosservers
+group_vars/nagiosclients
