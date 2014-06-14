@@ -1,0 +1,8 @@
+---
+
+nrpe_allow_commands: 0
+nrpe_port: 5666
+nrpe_commands_src: 
+nrpe_commands_dest: /etc/nagios/nrpe.d/
+nrpe_plugins_src: 
+nrpe_plugins_dest: /usr/lib64/nagios/plugins/
