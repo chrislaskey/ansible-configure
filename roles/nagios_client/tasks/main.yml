@@ -11,27 +11,29 @@
   notify: restart nrpe
 
 - name: Nagios Client | Sync plugins
-  synchronize: src="{{ nrpe.plugins.src }}" dest="{{ nrpe.plugins.dest }}"
+  synchronize: src="{{ nrpe_plugins_src }}" dest="{{ nrpe_plugins_dest }}"
+  when: nrpe_plugins_src|default("None") != "None"
 
 - name: Nagios Client | Update plugin file permissions
-  file: path="{{ nrpe.plugins.dest }}" owner=nagios group=nagios mode=0750 recurse=yes
+  file: path="{{ nrpe_plugins_dest }}" owner=nagios group=nagios mode=0750 recurse=yes
 
 - name: Nagios Client | Update plugin directory permissions
-  shell: "find {{ nrpe.plugins.dest }} -type d | xargs -I {} chmod 0755 {}"
+  shell: "find {{ nrpe_plugins_dest }} -type d | xargs -I {} chmod 0755 {}"
 
 - name: Nagios Client | Sync NRPE commands
-  synchronize: src="{{ nrpe.commands.src }}" dest="{{ nrpe.commands.dest }}"
+  synchronize: src="{{ nrpe_commands_src }}" dest="{{ nrpe_commands_dest }}"
+  when: nrpe_commands_src|default("None") != "None"
 
 - name: Nagios Client | Update NRPE command file permissions
-  file: path="{{ nrpe.commands.dest }}" owner=root group=root mode=0644 recurse=yes
+  file: path="{{ nrpe_commands_dest }}" owner=root group=root mode=0644 recurse=yes
 
 - name: Nagios Client | Update NRPE command directory permissions
-  shell: "find {{ nrpe.commands.dest }} -type d | xargs -I {} chmod 0755 {}"
+  shell: "find {{ nrpe_commands_dest }} -type d | xargs -I {} chmod 0755 {}"
 
 - name: Nagios Client | Start NRPE service
   service: name=nrpe state=started enabled=true
 
 - name: Iptables | Add NRPE exception
-  lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ nrpe.port }}"
-              insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ nrpe.port }} -j  ACCEPT"
+  lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ nrpe_port }}"
+              insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ nrpe_port }} -j  ACCEPT"
   notify: restart iptables
