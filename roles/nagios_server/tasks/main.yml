@@ -3,25 +3,25 @@
 
 - name: SELinux | Get a list of active modules
   shell: "semodule -l | grep {{ nagios_selinux_name }}"
-  when: nagios_selinux_name|default("None") != "None"
+  when: nagios_selinux_name|lower != "none"
   register: module_is_loaded
   ignore_errors: true
 
 - name: SELinux | Copy module config to target
   synchronize: src="{{ nagios_selinux_src }}" dest=/tmp
-  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+  when: nagios_selinux_src|lower != "none" and module_is_loaded|failed
 
 - name: SELinux | Check module config file
   shell: "checkmodule -M -m -o /tmp/{{ nagios_selinux_name }}.mod /tmp/{{ nagios_selinux_name }}.te"
-  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+  when: nagios_selinux_src|lower != "none" and module_is_loaded|failed
 
 - name: SELinux | Compile config file
   shell: "semodule_package -o /tmp/{{ nagios_selinux_name }}.pp -m /tmp/{{ nagios_selinux_name }}.mod"
-  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+  when: nagios_selinux_src|lower != "none" and module_is_loaded|failed
 
 - name: SELinux | Load config file
   shell: "semodule -i /tmp/{{ nagios_selinux_name }}.pp"
-  when: nagios_selinux_src|default("None") != "None" and module_is_loaded|failed
+  when: nagios_selinux_src|lower != "none" and module_is_loaded|failed
 
   # Taken from the audit2allow man page, this runs the commands:
   #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
@@ -39,7 +39,7 @@
 
 - name: Nagios Server | Sync plugins
   synchronize: src="{{ nagios_plugins_src }}" dest="{{ nagios_plugins_dest }}"
-  when: nagios_plugins_src|default("None") != "None"
+  when: nagios_plugins_src|lower != "none"
   notify: restart nagios
 
 - name: Nagios Server | Update plugin file permissions
@@ -77,7 +77,7 @@
 
 - name: Nagios Server | Sync config files
   synchronize: src="{{ nagios_config_src }}" dest="{{ nagios_config_dest }}"
-  when: nagios_config_src|default("None") != "None"
+  when: nagios_config_src|lower != "none"
   notify: restart nagios
 
 - name: Nagios Server | Update config file permissions
@@ -96,11 +96,11 @@
 
 - name: Nagios Server | Copy htpasswd creation script
   copy: src=htpasswd.sh dest=/etc/httpd/htpasswd.sh owner=root group=root mode=0700
-  when: nagios_apache_username|default("None") != "None"
+  when: nagios_apache_username|lower != "none"
 
 - name: Nagios Server | Create htpasswd
   command: "/etc/httpd/htpasswd.sh /etc/nagios/passwd {{ nagios_apache_username }} {{ nagios_apache_password }}"
-  when: nagios_apache_username|default("None") != "None"
+  when: nagios_apache_username|lower != "none"
 
 - name: Nagios Server | Add nagios user to webserver group
   user: name=nagios groups=nagios,apache append=yes
