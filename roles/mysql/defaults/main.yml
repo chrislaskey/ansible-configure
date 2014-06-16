@@ -7,4 +7,6 @@ mysql_repl_role: none
 mysql_root_password: example-password-Bmsk29jsl1Sn4gj
 mysql_repl_username: replication
 mysql_repl_password: example-password-d29bksbMs325Cja
+mysql_nagios_username: nagios
+mysql_nagios_password: example-password-adkj9sknbvladkn
 mysql_increment: 2
