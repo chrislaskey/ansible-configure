@@ -11,3 +11,7 @@
   yum: name={{ item }} state=present
   with_items:
    - rrdtool
+
+- name: Munin Server | Update main config file
+  template: src=munin.conf dest=/etc/munin/munin.conf owner=root group=root mode=0664
+
