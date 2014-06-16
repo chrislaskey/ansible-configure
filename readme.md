@@ -9,6 +9,7 @@ for:
 - MySQL Master/Slave replicated database server
 - Rsnapshot backup server
 - Nagios monitoring server
+- Munin monitoring server
 - HAProxy proxy server
 - NAT public/private gateway server
 
@@ -17,8 +18,9 @@ Tested on CentOS 6.5. Works with SELinux enabled.
 
 ### Note ###
 
-Before using this playbook make sure to update appropriate values in the
-`group_vars` directory. In particular be sure to set or change:
+Before using this playbook make sure to update appropriate default values with
+application specific values using `group_vars` directory. In particular be sure
+to set or change:
 
 	# file: group_vars/all
 	mysql_dump_username: <value>
