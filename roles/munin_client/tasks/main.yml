@@ -10,3 +10,10 @@
   #
   # Service restart seems to fix this CentOS notification bug:
   # https://bugzilla.redhat.com/show_bug.cgi?id=955902
+
+- name: Munin Client | Start Munin Node client service
+  service: name=munin-node state=started enabled=true
+
+- name: Munin Client | Update Munin Node config file
+  template: src=munin-node.conf dest=/etc/munin/munin-node.conf owner=root group=root mode=0644
+  notify: restart munin-node
