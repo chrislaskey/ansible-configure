@@ -1,0 +1,7 @@
+---
+
+munin_graph_strategy: cron
+munin_html_strategy: cron
+munin_htmldir: /var/www/html/munin
+munin_apache_username: munin
+munin_apache_password: munin
