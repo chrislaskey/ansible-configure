@@ -40,6 +40,7 @@
 - name: Nagios Client | Sync plugins
   synchronize: src="{{ nrpe_plugins_src }}" dest="{{ nrpe_plugins_dest }}"
   when: nrpe_plugins_src|lower != "none"
+  notify: restart nrpe
 
 - name: Nagios Client | Update plugin file permissions
   file: path="{{ nrpe_plugins_dest }}" owner=nagios group=nagios mode=0750 recurse=yes
@@ -50,6 +51,7 @@
 - name: Nagios Client | Sync NRPE commands
   synchronize: src="{{ nrpe_commands_src }}" dest="{{ nrpe_commands_dest }}"
   when: nrpe_commands_src|lower != "none"
+  notify: restart nrpe
 
 - name: Nagios Client | Update NRPE command file permissions
   file: path="{{ nrpe_commands_dest }}" owner=root group=root mode=0644 recurse=yes
