@@ -1,3 +1,5 @@
 data/*
+group_vars/muninservers
+group_vars/muninclients
 group_vars/nagiosservers
 group_vars/nagiosclients
