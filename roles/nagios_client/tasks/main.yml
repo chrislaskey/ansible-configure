@@ -1,6 +1,33 @@
 ---
 # This task adds the remote Nagios NRPE client
 
+- name: SELinux | Get a list of active modules
+  shell: "semodule -l | grep {{ nrpe_selinux_name }}"
+  when: nrpe_selinux_name|lower != "none"
+  register: module_is_loaded
+  ignore_errors: true
+
+- name: SELinux | Copy module config to target
+  synchronize: src="{{ nrpe_selinux_src }}" dest=/tmp
+  when: nrpe_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Check module config file
+  shell: "checkmodule -M -m -o /tmp/{{ nrpe_selinux_name }}.mod /tmp/{{ nrpe_selinux_name }}.te"
+  when: nrpe_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Compile config file
+  shell: "semodule_package -o /tmp/{{ nrpe_selinux_name }}.pp -m /tmp/{{ nrpe_selinux_name }}.mod"
+  when: nrpe_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Load config file
+  shell: "semodule -i /tmp/{{ nrpe_selinux_name }}.pp"
+  when: nrpe_selinux_src|lower != "none" and module_is_loaded|failed
+
+  # Taken from the audit2allow man page, this runs the commands:
+  #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
+  #     semodule_package -o /tmp/rule.pp -m /tmp/rule.mod
+  #     semodule -i rule.pp
+
 - name: Nagios Client | Install NRPE
   yum: name={{ item }} state=present
   with_items:
