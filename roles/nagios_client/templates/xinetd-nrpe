@@ -1,0 +1,25 @@
+# default: off
+# description: NRPE (Nagios Remote Plugin Executor)
+service nrpe
+{
+        flags           = REUSE
+        type            = UNLISTED
+        port            = 5666
+        socket_type     = stream
+        wait            = no
+        user            = nagios
+        group           = nagios
+        server          = /usr/sbin/nrpe
+        server_args     = -c /etc/nagios/nrpe.cfg --inetd
+        log_on_failure  += USERID
+        disable         = yes
+        only_from       = 127.0.0.1
+{%- for host in groups["nagiosservers"] -%}
+    {%- for interface in hostvars[host].ansible_interfaces -%}
+        {%- if interface != "lo" -%}
+            {{ " " ~ hostvars[host]["ansible_"~interface].ipv4.address }}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endfor %}
+
+}
