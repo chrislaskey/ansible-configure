@@ -17,3 +17,20 @@
 - name: Munin Client | Update Munin Node config file
   template: src=munin-node.conf dest=/etc/munin/munin-node.conf owner=root group=root mode=0644
   notify: restart munin-node
+
+- name: Iptables | Get current rules
+  shell: iptables-save
+  register: iptablesrules
+  always_run: yes
+
+  # Note: the always_run attribute ensures the shell command is executed
+  # even when using ansible --check flag. See:
+  # http://docs.ansible.com/playbooks_checkmode.html
+
+- name: Iptables | Add Munin Node port
+  shell: iptables -I INPUT -p tcp  --dport {{ munin_node_port }} -j  ACCEPT -m comment --comment "Unique ID MUNINNODE gateway rule accept incoming on private network eth2"
+  when: iptablesrules.stdout.find("MUNINNODE") == -1 
+
+- name: Iptables | Explicitly save current rules
+  shell: service iptables save
+  notify: restart iptables
