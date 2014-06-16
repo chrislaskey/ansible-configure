@@ -68,6 +68,18 @@
               regexp="^nrpe"
               line="nrpe:ALL"
 
+- name: Xinetd | Update NRPE config options
+  template: src=xinetd-nrpe dest=/etc/xinetd.d/nrpe owner=root group=root mode=0644
+  notify: restart nrpe
+
+- name: Xinetd | Update services port table
+  lineinfile: dest=/etc/services
+              state=present
+              regexp="^nrpe"
+              insertafter="^sfm-db-server"
+              line="nrpe            5666/tcp"
+  notify: restart nrpe
+
 - name: Iptables | Get current rules
   shell: iptables-save
   register: iptablesrules
