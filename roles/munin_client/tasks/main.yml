@@ -3,6 +3,10 @@
 
 - name: Munin Client | Install Munin Node package
   shell: yum install --exclude=perl-XML-SAX-Base --skip-broken --assumeyes munin-node 
+  notify: restart munin-node
 
   # CentOS 6 has a dependency issue, skipping this package version solves the
   # conflict and munin works fine with the already installed older version
+  #
+  # Service restart seems to fix this CentOS notification bug:
+  # https://bugzilla.redhat.com/show_bug.cgi?id=955902
