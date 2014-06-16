@@ -15,3 +15,10 @@
 - name: Munin Server | Update main config file
   template: src=munin.conf dest=/etc/munin/munin.conf owner=root group=root mode=0664
 
+- name: Munin Server | Copy htpasswd creation script
+  copy: src=htpasswd.sh dest=/etc/httpd/htpasswd.sh owner=root group=root mode=0700
+  when: munin_apache_username|lower != "none"
+
+- name: Munin Server | Create htpasswd
+  command: "/etc/httpd/htpasswd.sh /etc/munin/munin-htpasswd {{ munin_apache_username }} {{ munin_apache_password }}"
+  when: munin_apache_username|lower != "none"
