@@ -2,6 +2,8 @@
 
 nrpe_allow_commands: 0
 nrpe_port: 5666
+nrpe_selinux_name: 
+nrpe_selinux_src: 
 nrpe_commands_src: 
 nrpe_commands_dest: /etc/nagios/nrpe.d/
 nrpe_plugins_src: 
