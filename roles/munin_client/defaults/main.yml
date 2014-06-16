@@ -1,0 +1,6 @@
+---
+
+munin_node_port: 4949
+munin_node_addresses: 
+  - 'allow ^127\.0\.0\.1$'
+  - 'allow ^::1$'
