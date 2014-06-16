@@ -22,7 +22,7 @@
 
 - name: Iptables | Create NAT masquerade rule
   shell: iptables -A POSTROUTING -t nat -o eth0 -j MASQUERADE -m comment --comment "Unique ID GATEWAYNAT gateway rule allows outside connections"
-  when: iptablesrules.stdout.find("GATEWAYNAT1") == -1
+  when: iptablesrules.stdout.find("GATEWAYNAT") == -1
 
 - name: Iptables | Create accept rule for eth2
   shell: iptables -I INPUT -t filter -i eth2 -j ACCEPT -m comment --comment "Unique ID GATEWAYACCEPTETH2 gateway rule accept incoming on private network eth2"
