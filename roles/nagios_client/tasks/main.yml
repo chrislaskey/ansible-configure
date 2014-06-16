@@ -62,6 +62,12 @@
 - name: Nagios Client | Start NRPE service
   service: name=nrpe state=started enabled=true
 
+- name: Hosts | Add Nagios Server to hosts allowed
+  lineinfile: dest=/etc/hosts.allow
+              state=present
+              regexp="^nrpe"
+              line="nrpe:ALL"
+
 - name: Iptables | Get current rules
   shell: iptables-save
   register: iptablesrules
