@@ -1,0 +1,9 @@
+---
+# This task installs and manages the Munin server
+
+- name: Munin Server | Install Munin server package
+  shell: yum install --exclude=perl-XML-SAX-Base --skip-broken --assumeyes munin 
+
+  # CentOS 6 has a dependency issue, skipping this package version solves the
+  # conflict and munin works fine with the already installed older version
+
