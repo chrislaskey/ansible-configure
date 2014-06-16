@@ -40,3 +40,6 @@
 - name: HAProxy | Add HAProxy status logrotate config
   copy: src=logrotate-haproxy-status dest=/etc/logrotate.d/haproxystatus owner=root group=root mode=0644
   notify: restart haproxy
+
+- name: HAProxy | Make sure service is running and on boot
+  service: name=haproxy state=started enabled=yes
