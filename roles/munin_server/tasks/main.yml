@@ -22,3 +22,9 @@
 - name: Munin Server | Create htpasswd
   command: "/etc/httpd/htpasswd.sh /etc/munin/munin-htpasswd {{ munin_apache_username }} {{ munin_apache_password }}"
   when: munin_apache_username|lower != "none"
+
+- name: Munin Server | Add munin user to webserver group
+  user: name=munin groups=munin,apache append=yes
+
+- name: Munin Server | Start Apache service
+  service: name=httpd state=started enabled=true
