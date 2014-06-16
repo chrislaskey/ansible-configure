@@ -7,3 +7,7 @@
   # CentOS 6 has a dependency issue, skipping this package version solves the
   # conflict and munin works fine with the already installed older version
 
+- name: Munin Server | Install Munin server support packages
+  yum: name={{ item }} state=present
+  with_items:
+   - rrdtool
