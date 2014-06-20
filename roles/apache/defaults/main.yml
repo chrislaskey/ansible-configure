@@ -1,3 +1,5 @@
 ---
 
 httpd_port: 80
+httpd_selinux_src: roles/apache/files/ApacheModWsgiRule.te
+httpd_selinux_name: ApacheModWsgiRule
