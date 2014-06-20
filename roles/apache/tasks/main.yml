@@ -52,5 +52,32 @@
 - name: SELinux | Allow httpd to remote network connect to database
   seboolean: name=httpd_can_network_connect_db state=true persistent=yes
 
+- name: SELinux | Get a list of active modules
+  shell: "semodule -l | grep {{ httpd_selinux_name }}"
+  when: httpd_selinux_name|lower != "none"
+  register: module_is_loaded
+  ignore_errors: true
+
+- name: SELinux | Copy module config to target
+  synchronize: src="{{ httpd_selinux_src }}" dest=/tmp
+  when: httpd_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Check module config file
+  shell: "checkmodule -M -m -o /tmp/{{ httpd_selinux_name }}.mod /tmp/{{ httpd_selinux_name }}.te"
+  when: httpd_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Compile config file
+  shell: "semodule_package -o /tmp/{{ httpd_selinux_name }}.pp -m /tmp/{{ httpd_selinux_name }}.mod"
+  when: httpd_selinux_src|lower != "none" and module_is_loaded|failed
+
+- name: SELinux | Load config file
+  shell: "semodule -i /tmp/{{ httpd_selinux_name }}.pp"
+  when: httpd_selinux_src|lower != "none" and module_is_loaded|failed
+
+  # Taken from the audit2allow man page, this runs the commands:
+  #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
+  #     semodule_package -o /tmp/rule.pp -m /tmp/rule.mod
+  #     semodule -i rule.pp
+
 - name: Apache | Make sure httpd service is running
   service: name=httpd state=started enabled=yes
