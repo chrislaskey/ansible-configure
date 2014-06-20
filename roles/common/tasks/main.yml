@@ -58,6 +58,15 @@
 - name: Install logwatch package
   yum: name=logwatch state=present
 
+- name: Install python package
+  yum: name=python state=present
+
+- name: Install python pip package
+  yum: name=python-pip state=present
+
+- name: Install python virtualenv package
+  yum: name=python-virtualenv state=present
+
 - name: Install ntp package
   yum: name=ntp state=present
 
