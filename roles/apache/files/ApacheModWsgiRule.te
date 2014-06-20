@@ -1,0 +1,13 @@
+
+module ApacheModWsgiRule 1.0;
+
+require {
+	type httpd_log_t;
+	type httpd_t;
+	class sock_file { write create unlink setattr };
+	class dir remove_name;
+}
+
+#============= httpd_t ==============
+allow httpd_t httpd_log_t:dir remove_name;
+allow httpd_t httpd_log_t:sock_file { write create unlink setattr };
