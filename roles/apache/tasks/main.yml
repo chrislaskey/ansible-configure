@@ -41,6 +41,12 @@
 - name: Apache | Remove default welcome page
   file: path=/etc/httpd/conf.d/welcome.conf state=absent
 
+- name: Apache | Update log directory permissions
+  file: path=/var/log/httpd state=directory owner=root group=root mode=0755
+
+  # Fixes daemon socket issues with modules like mod_wsgi
+  # See: https://code.google.com/p/modwsgi/wiki/ConfigurationIssues
+
 - name: Iptables | Insert iptables rule for httpd
   lineinfile: dest=/etc/sysconfig/iptables create=yes state=present regexp="{{ httpd_port }}" insertafter="^:OUTPUT "
               line="-A INPUT -p tcp  --dport {{ httpd_port }} -j  ACCEPT"
