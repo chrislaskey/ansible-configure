@@ -35,16 +35,24 @@
   # here.
 
 - name: Iptables | Create forward rule for eth2
-  shell: iptables -I FORWARD -t filter -i eth2 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH2 gateway rule accept private network connections"
+  shell: iptables -I FORWARD -t filter -i eth2 -o eth0 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH2 gateway rule accept private network connections"
   when: iptablesrules.stdout.find("GATEWAYFORWARDETH2") == -1
+
+- name: Iptables | Create forward rule for eth2
+  shell: iptables -I FORWARD -t filter -i eth0 -o eth2 -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Unique ID GATEWAYINPUTETH2 gateway rule accept private network connections"
+  when: iptablesrules.stdout.find("GATEWAYINPUTETH2") == -1
 
 - name: Iptables | Create accept rule for eth1
   shell: iptables -I INPUT -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYACCEPTETH1 gateway rule accept incoming on private network eth1"
   when: iptablesrules.stdout.find("GATEWAYACCEPTETH1") == -1 
 
 - name: Iptables | Create forward rule for eth1
-  shell: iptables -I FORWARD -t filter -i eth1 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH1 gateway rule accept private network connections"
+  shell: iptables -I FORWARD -t filter -i eth1 -o eth0 -j ACCEPT -m comment --comment "Unique ID GATEWAYFORWARDETH1 gateway rule accept private network connections"
   when: iptablesrules.stdout.find("GATEWAYFORWARDETH1") == -1 
+
+- name: Iptables | Create forward rule for eth1
+  shell: iptables -I FORWARD -t filter -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Unique ID GATEWAYINPUTETH1 gateway rule accept private network connections"
+  when: iptablesrules.stdout.find("GATEWAYINPUTETH1") == -1
 
 - name: Iptables | Explicitly save current rules
   shell: service iptables save
