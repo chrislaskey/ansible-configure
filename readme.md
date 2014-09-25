@@ -15,6 +15,14 @@ for:
 
 Tested on CentOS 6.5. Works with SELinux enabled.
 
+The Future
+================================================================================
+
+This repository currently supports CentOS 6.5. I have started to migrate these
+configuration files to CentOS 7. An archival version will remain in the
+`centos6` branch. New development is being done in the `centos7` branch. The
+main repository will remain supporting 6.5 until the 7 branch is thoroughly
+tested and stable.
 
 ### Note ###
 
