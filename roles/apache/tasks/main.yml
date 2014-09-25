@@ -30,8 +30,16 @@
     - mod_userdir.so
   notify: restart httpd
 
-- name: Apache | Remove unused modules from config
+- name: Apache | Remove unused modules from main config
   lineinfile: dest=/etc/httpd/conf/httpd.conf backrefs=yes
+              state=absent
+              regexp='LoadModule .* modules/{{ item }}'
+  with_items:
+    - mod_userdir.so
+  notify: restart httpd
+
+- name: Apache | Remove unused modules from module config
+  lineinfile: dest=/etc/httpd/conf.modules.d/00-base.conf backrefs=yes
               state=absent
               regexp='LoadModule .* modules/{{ item }}'
   with_items:
