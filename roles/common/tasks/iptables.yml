@@ -1,0 +1,12 @@
+---
+
+# Replace firewalld with iptables
+
+- name: iptables | Disable firewalld
+  shell: systemctl stop firewalld && systemctl mask firewalld
+
+- name: iptables | Install package
+  yum: name=iptables-services state=present
+
+- name: iptables | Start and enable service
+  service: name=iptables state=started enabled=true
