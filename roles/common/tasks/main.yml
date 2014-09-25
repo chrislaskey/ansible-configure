@@ -64,8 +64,8 @@
 - name: Install python package
   yum: name=python state=present
 
-- name: Install python pip package
-  yum: name=python-pip state=present
+# - name: Install python pip package
+#   yum: name=python-pip state=present
 
 - name: Install python virtualenv package
   yum: name=python-virtualenv state=present
