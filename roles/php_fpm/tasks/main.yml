@@ -21,7 +21,6 @@
    - php-mysql
    - php-pear
    - php-pgsql
-   - php-sqlite
    - php-xcache
   notify:
    - restart php-fpm
@@ -65,11 +64,11 @@
 - name: PHP-FPM | Apache | Install
   yum: name={{ item }} state=present
   with_items:
-   - mod_fastcgi
+   - mod_fcgid
 
-- name: PHP-FPM | Apache | Add PHP-FPM settings
-  copy: src=fastcgi.conf dest=/etc/httpd/conf.d/ owner=root group=root mode=0644
-  notify: restart httpd
+# - name: PHP-FPM | Apache | Add PHP-FPM settings
+#   copy: src=fastcgi.conf dest=/etc/httpd/conf.d/ owner=root group=root mode=0644
+#   notify: restart httpd
 
 - name: PHP-FPM | Apache | Disable mod_php (uses mod_fastcgi instead)
   shell: if test -f /etc/httpd/conf.d/php.conf; then mv /etc/httpd/conf.d/php.conf /etc/httpd/conf.d/php.conf.disabled; fi
