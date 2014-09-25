@@ -58,6 +58,9 @@
 - name: Install logwatch package
   yum: name=logwatch state=present
 
+- name: Install net-tools (ifconfig, route) package
+  yum: name=net-tools state=present
+
 - name: Install python package
   yum: name=python state=present
 
