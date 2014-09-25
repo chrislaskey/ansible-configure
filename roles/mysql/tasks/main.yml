@@ -1,93 +1,93 @@
 ---
-# This playbook will install mysql and create db user and give permissions.
+# This playbook will install MariaDB (MySQL) and create db user and give permissions.
 
-# MySQL Service
+# Service
 
-- name: MySQL | Install
+- name: MariaDB (MySQL) | Install
   yum: name={{ item }} state=installed
   with_items:
-   - mysql-server
+   - mariadb-server
    - MySQL-python
 
-- name: MySQL | Start service
-  service: name=mysqld state=started enabled=true
+- name: MariaDB (MySQL) | Start service
+  service: name=mariadb state=started enabled=true
 
-- name: MySQL | Create configuration file
+- name: MariaDB (MySQL) | Create configuration file
   template: src=my.cnf dest=/etc/my.cnf
-  register: mysql_config
+  register: mariadb_config
 
-- name: MySQL | Restart MySQL immediately if config has changed
-  command: service mysqld restart
-  when: mysql_config|changed
+- name: MariaDB (MySQL) | Restart MariaDB immediately if config has changed
+  command: service mariadb restart
+  when: mariadb_config|changed
 
-- name: SELinux | Configure SELinux to start mysql on any port
+- name: SELinux | Configure SELinux to start mariadb on any port
   seboolean: name=mysql_connect_any state=true persistent=yes
 
-- name: Iptables | Insert MySQL iptables rule
+- name: Iptables | Insert MariaDB (MySQL) iptables rule
   lineinfile: dest=/etc/sysconfig/iptables state=present regexp="{{ mysql_port }}"
               insertafter="^:OUTPUT " line="-A INPUT -p tcp  --dport {{ mysql_port }} -j  ACCEPT"
   notify: restart iptables
 
-# MySQL databases
+# Databases
 
-- name: MySQL | Remove the test database
+- name: MariaDB (MySQL) | Remove the test database
   mysql_db: name=test state=absent
 
-# MySQL users
+# Users
 
-- name: MySQL | Update root user remote password
+- name: MariaDB (MySQL) | Update root user remote password
   mysql_user: name=root password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT host='%' state=present
 
 # NOTE: Ansible installs the MySQL package in headless mode making the default root password blank.
 #       Setting a root password with the `mysql_user` module on localhost is buggy even when passing
 #       updated login_user and login_password params. Tried with Ansible 1.5.4.
 
-# - name: MySQL | Update root user local password
+# - name: MariaDB (MySQL) | Update root user local password
 #   mysql_user: name=root password="{{ mysql_root_password }}" priv=*.*:ALL,GRANT host='localhost' state=present
 
-- name: MySQL | Remove any anonymous MySQL users
+- name: MariaDB (MySQL) | Remove any anonymous MySQL users
   mysql_user: name="" host={{ item }} state=absent
   with_items:
    - localhost
    - "{{ ansible_hostname }}"
 
-- name: MySQL | Create mysqldump user with local access
+- name: MariaDB (MySQL) | Create mysqldump user with local access
   mysql_user: name="{{ mysql_dump_username }}" password="{{ mysql_dump_password }}" priv="*.*:USAGE,SELECT,LOCK TABLES,SHOW VIEW,EVENT,TRIGGER" host="localhost" state=present
   when: mysql_repl_role != "master"
 
-- name: MySQL | Create nagios user with remote access
+- name: MariaDB (MySQL) | Create nagios user with remote access
   mysql_user: name="{{ mysql_nagios_username }}" password="{{ mysql_nagios_password }}" priv="*.*:SELECT,REPLICATION CLIENT" host="%" state=present
   when: mysql_repl_role == "master"
 
-- name: MySQL | Create nagios user with local access
+- name: MariaDB (MySQL) | Create nagios user with local access
   mysql_user: name="{{ mysql_nagios_username }}" password="{{ mysql_nagios_password }}" priv="*.*:SELECT,REPLICATION CLIENT" host="localhost" state=present
   when: mysql_repl_role == "master"
 
-- name: MySQL | Replication | Create replication user with remote access
+- name: MariaDB (MySQL) | Replication | Create replication user with remote access
   mysql_user: name="{{ mysql_repl_username }}" password="{{ mysql_repl_password }}" priv="*.*:REPLICATION SLAVE" host="%" state=present
   when: mysql_repl_role == "master"
 
-# MySQL slave replication
+# Slave replication
 #
 # Code based on github repository by Benno Joy
 # See: https://github.com/bennojoy/mysql
 
-- name: MySQL | Replication | Check if slave is already configured for replication
+- name: MariaDB (MySQL) | Replication | Check if slave is already configured for replication
   mysql_replication: mode=getslave
   ignore_errors: true
   register: slave
   when: mysql_repl_role == "slave"
 
-- name: MySQL | Replication | Get the current master servers replication status
+- name: MariaDB (MySQL) | Replication | Get the current master servers replication status
   mysql_replication: mode=getmaster
   delegate_to: "{{ mysql_repl_master }}"
   register: repl_stat
   when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
 
-- name: MySQL | Replication | Change the master info on the slave
+- name: MariaDB (MySQL) | Replication | Change the master info on the slave
   mysql_replication: mode=changemaster master_host={{ mysql_repl_master }} master_log_file={{ repl_stat.File }} master_log_pos={{ repl_stat.Position }} master_user="{{ mysql_repl_username }}" master_password="{{ mysql_repl_password }}"
   when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
 
-- name: MySQL | Replication | Restart MySQL slave to start replication
-  command: service mysqld restart
+- name: MariaDB (MySQL) | Replication | Restart MariaDB slave to start replication
+  command: service mariadb restart
   when: slave|failed and mysql_repl_role == "slave" and mysql_repl_master is defined
