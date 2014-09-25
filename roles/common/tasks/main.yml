@@ -82,6 +82,9 @@
 - name: Install wget package
   yum: name=wget state=present
 
+- name: Install vim package
+  yum: name=vim state=present
+
 # Basic Services
 
 - name: Start the ntp service
