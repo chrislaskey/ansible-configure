@@ -1,0 +1,9 @@
+---
+
+rbenv:
+  env: user
+  version: v0.4.0
+  ruby_version: 2.0.0-p481
+
+rbenv_users:
+  - { name: "ansible", home: "/home/ansible/", comment: "Development user" }

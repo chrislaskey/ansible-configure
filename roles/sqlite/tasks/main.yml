@@ -1,4 +1,7 @@
 ---
 
-- name: SQLite | Install
-  yum: name=sqlite state=present
+- name: Install sqlite dev package
+  apt: name=libsqlite3-dev state=present
+
+- name: Install main sqlite package
+  apt: name=sqlite3 state=present
