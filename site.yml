@@ -1,6 +1,7 @@
 ---
 
 - include: playbook-common.yml
+- include: playbook-rails.yml
 # - include: playbook-gateway.yml
 # - include: playbook-proxy.yml
 # - include: playbook-backup.yml

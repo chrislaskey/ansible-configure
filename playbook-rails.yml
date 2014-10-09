@@ -1,0 +1,9 @@
+---
+
+- name: configure support packages for Ruby on Rails
+  hosts: webservers
+  remote_user: ansible
+  sudo: yes
+  roles:
+    - rbenv
+    - nodejs
