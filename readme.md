@@ -1,6 +1,8 @@
 About
 ================================================================================
 
+**Experimental Ubuntu 14.04 branch. Not stable!**
+
 An ansible playbook for configuring different kinds of servers. Including roles
 for:
 

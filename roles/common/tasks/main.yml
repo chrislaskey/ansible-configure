@@ -1,38 +1,4 @@
 ---
-
-# SELinux
-
-- name: Install python bindings for selinux
-  yum: name=libselinux-python state=present
-
-- name: Install python bindings for semanage
-  yum: name=libsemanage-python state=present
-
-- name: Install python tools managing selinux
-  yum: name=policycoreutils-python state=present
-      
-# Yum
-
-- name: Copy the EPEL repository definition
-  copy: src=epel.repo dest=/etc/yum.repos.d/
-
-- name: Create the GPG key for EPEL
-  copy: src=RPM-GPG-KEY-EPEL-7 dest=/etc/pki/rpm-gpg/
-
-- name: Copy the Remi repository definition
-  copy: src=remi.repo dest=/etc/yum.repos.d/
-
-- name: Create the GPG key for Remi
-  copy: src=RPM-GPG-KEY-remi dest=/etc/pki/rpm-gpg/
-
-- name: Copy the RPMforge repository definition
-  copy: src=rpmforge.repo dest=/etc/yum.repos.d/
-
-- name: Create the GPG key for RPMforge dag
-  copy: src=RPM-GPG-KEY-rpmforge-dag dest=/etc/pki/rpm-gpg/
-
-- name: Create the GPG key for RPMforge fabian
-  copy: src=RPM-GPG-KEY-rpmforge-fabian dest=/etc/pki/rpm-gpg/
       
 # Basic Packages
 
@@ -48,18 +14,8 @@
 - name: Install git package
   yum: name=git state=present
 
-- name: Install fail2ban package
-  yum: name=fail2ban state=present
-
-- name: Install fail2ban config
-  copy: src=fail2ban-jail.conf dest=/etc/fail2ban/jail.local owner=root group=root mode=0644
-  notify: restart fail2ban
-
 - name: Install logwatch package
   yum: name=logwatch state=present
-
-- name: Install net-tools (ifconfig, route) package
-  yum: name=net-tools state=present
 
 - name: Install python package
   yum: name=python state=present
@@ -89,7 +45,3 @@
 
 - name: Start the ntp service
   service: name=ntpd state=started enabled=true
-
-# Iptables
-
-- include: iptables.yml
