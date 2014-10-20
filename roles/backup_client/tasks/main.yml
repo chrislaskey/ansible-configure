@@ -6,6 +6,7 @@
 - name: Backup Client | Create authorized_keys file
   file: path="/home/{{ ansible_ssh_user }}/.ssh/authorized_keys" state=touch owner="{{ ansible_ssh_user }}" group="{{ ansible_ssh_user }}" mode=0600
 
-- name: Backup Client | Add backup server public keys to authorized_keys file
-  lineinfile: dest="/home/{{ ansible_ssh_user }}/.ssh/authorized_keys" regexp="{{ ansible_ssh_user }}@{{ hostvars[item]['ansible_hostname'] }}" line="{{ hostvars[item]['public_key'] }}"
+- name: Backup Client | Set up authorized_keys for the deploy user
+  authorized_key: user={{ ansible_ssh_user }}
+                  key="{{ hostvars[item]['public_key'] }}"
   with_items: groups.backupservers
