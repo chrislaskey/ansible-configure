@@ -52,6 +52,8 @@
               line="-A INPUT -p tcp  --dport {{ httpd_port }} -j  ACCEPT"
   notify: restart iptables
 
+# Apache
+
 - name: SELinux | Allow httpd to remote network connect
   seboolean: name=httpd_can_network_connect state=true persistent=yes
 
@@ -79,6 +81,41 @@
 - name: SELinux | Load config file
   shell: "semodule -i /tmp/{{ httpd_selinux_name }}.pp"
   when: httpd_selinux_src|lower != "none" and module_is_loaded|failed
+
+  # Taken from the audit2allow man page, this runs the commands:
+  #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
+  #     semodule_package -o /tmp/rule.pp -m /tmp/rule.mod
+  #     semodule -i rule.pp
+
+# Sendmail
+
+- name: SELinux | Allow httpd to use sendmail
+  seboolean: name=httpd_can_sendmail state=true persistent=yes
+
+- name: SELinux | Allow httpd to set rlimit
+  seboolean: name=httpd_setrlimit state=true persistent=yes
+
+- name: SELinux | Sendmail | Get a list of active modules
+  shell: "semodule -l | grep {{ sendmail_selinux_name }}"
+  when: sendmail_selinux_name|lower != "none"
+  register: sendmail_module_is_loaded
+  ignore_errors: true
+
+- name: SELinux | Sendmail | Copy module config to target
+  synchronize: src="{{ sendmail_selinux_src }}" dest=/tmp
+  when: sendmail_selinux_src|lower != "none" and sendmail_module_is_loaded|failed
+
+- name: SELinux | Sendmail | Check module config file
+  shell: "checkmodule -M -m -o /tmp/{{ sendmail_selinux_name }}.mod /tmp/{{ sendmail_selinux_name }}.te"
+  when: sendmail_selinux_src|lower != "none" and sendmail_module_is_loaded|failed
+
+- name: SELinux | Sendmail | Compile config file
+  shell: "semodule_package -o /tmp/{{ sendmail_selinux_name }}.pp -m /tmp/{{ sendmail_selinux_name }}.mod"
+  when: sendmail_selinux_src|lower != "none" and sendmail_module_is_loaded|failed
+
+- name: SELinux | Sendmail | Load config file
+  shell: "semodule -i /tmp/{{ sendmail_selinux_name }}.pp"
+  when: sendmail_selinux_src|lower != "none" and sendmail_module_is_loaded|failed
 
   # Taken from the audit2allow man page, this runs the commands:
   #     checkmodule -M -m -o /tmp/rule.mod /tmp/rule.te
