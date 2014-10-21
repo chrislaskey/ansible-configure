@@ -1,0 +1,35 @@
+
+module SendmailRule 1.0;
+
+require {
+	type postfix_public_t;
+	type postfix_spool_t;
+	type httpd_t;
+	type postfix_spool_maildrop_t;
+	class process setrlimit;
+	class file { rename write getattr setattr read create open };
+	class dir { write remove_name search add_name };
+	class fifo_file { write getattr open };
+}
+
+#============= httpd_t ==============
+allow httpd_t postfix_public_t:dir search;
+#!!!! The source type 'httpd_t' can write to a 'fifo_file' of the following types:
+# httpd_tmpfs_t, dirsrv_var_log_t, passenger_var_run_t
+
+allow httpd_t postfix_public_t:fifo_file { write getattr open };
+
+#!!!! This avc can be allowed using the boolean 'httpd_can_sendmail'
+allow httpd_t postfix_spool_maildrop_t:dir search;
+#!!!! The source type 'httpd_t' can write to a 'dir' of the following types:
+# squirrelmail_spool_t, dirsrvadmin_config_t, var_lock_t, tmp_t, var_t, tmpfs_t, httpd_log_t, dirsrv_config_t, httpd_tmp_t, dirsrvadmin_tmp_t, httpd_cache_t, httpd_tmpfs_t, httpd_squirrelmail_t, var_lib_t, var_run_t, var_log_t, dirsrv_var_log_t, zarafa_var_lib_t, dirsrv_var_run_t, httpd_var_lib_t, httpd_var_run_t, httpd_nagios_rw_content_t, passenger_tmp_t, httpd_nutups_cgi_rw_content_t, httpd_apcupsd_cgi_rw_content_t, httpd_sys_content_t, httpd_dspam_rw_content_t, httpd_mediawiki_rw_content_t, httpd_squid_rw_content_t, httpd_prewikka_rw_content_t, httpd_smokeping_cgi_rw_content_t, passenger_var_run_t, httpd_openshift_rw_content_t, httpd_dirsrvadmin_rw_content_t, httpd_w3c_validator_rw_content_t, cluster_var_lib_t, cluster_var_run_t, httpd_user_rw_content_t, httpd_awstats_rw_content_t, root_t, httpdcontent, httpd_cobbler_rw_content_t, httpd_munin_rw_content_t, cluster_conf_t, httpd_bugzilla_rw_content_t, httpd_cvs_rw_content_t, httpd_git_rw_content_t, httpd_sys_rw_content_t, httpd_sys_rw_content_t
+
+allow httpd_t postfix_spool_maildrop_t:dir { write remove_name add_name };
+allow httpd_t postfix_spool_maildrop_t:file { rename create setattr };
+
+#!!!! This avc can be allowed using the boolean 'httpd_can_sendmail'
+allow httpd_t postfix_spool_maildrop_t:file { read write getattr open };
+allow httpd_t postfix_spool_t:dir search;
+
+#!!!! This avc can be allowed using the boolean 'httpd_setrlimit'
+allow httpd_t self:process setrlimit;
